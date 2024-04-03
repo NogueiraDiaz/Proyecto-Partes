@@ -1,0 +1,25 @@
+[Jorge, Ursula]
+Rediseniar estilo (php, html, css, bootstrap)
+	- Visualmente decente
+	- algunas paginas deberan ser modificadas ya que cambia el codigo que las controla
+
+[Arturo, Piero]
+Sustituir en todos los archivos php los campos de la bbdd
+	- Cambiar la cadena de conexion a la nueva bbdd
+	- En la nueva bbdd insertar campos de prueba
+	- Modificar los objetos de las tablas en el codigo
+	- Buscar en todo el codigo TODAS las llamadas a estos objetos y modificarlas
+
+[Andres]
+Modificar los todos los filtros para que funcionen (nueva bbdd)
+	- Los filtros para buscar por curso ahora seran un bucle que itere un nuevo objeto de bbdd
+	- (Si no existen que no lo se) Permitir busqueda por mas campos a parte del grupo
+
+[Para mi en una tarde]
+Hacer un programa que itere los archivos del pryecto comparando linea por linea y mostrando las diferencias
+
+
+[TODOS]
+Insertar en la bbdd profesores de todos los tipos permitidos(0, 1, 2 (Creo))
+Antes de empezar crearnos cada uno un profesor para trabajar sobre la bbdd sin que haya confusiones
+Instalacion y uso de la extension Docker-remote-container (por nuestra salud mental)

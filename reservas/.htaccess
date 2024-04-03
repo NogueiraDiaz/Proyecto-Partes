@@ -1,0 +1,15 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+<FilesMatch "\.(db|sql)">
+    require all denied
+</FilesMatch>
+<Files ~ "^\.(htaccess|htpasswd)$">
+    deny from all
+</Files>
+order deny,allow
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>
+ErrorDocument 404 "<h1 style='padding: 30px;text-align: center;'>404 Aqui no hay nada...<br><a href='/reservas/misreservas.php'>Ir al inicio</a></h1>"

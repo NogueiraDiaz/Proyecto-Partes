@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+#footerCredits{
+    font-family: 'Poppins' sans-serif;
+    font-size: 14px;
+}
+
+.errorMsg{
+    text-align: center !important;
+    color: black !important;
+    background-color: rgba(255, 44, 44, 0.6) !important;
+    border-radius: 0.5rem !important;
+    margin-top: 8px !important;
+    padding: 10px 0px !important;
+}
+
+.successMsg{
+    text-align: center !important;
+    color: black !important;
+    background-color: rgba(44, 255, 44, 0.6) !important;
+    border-radius: 0.5rem !important;
+    margin-top: 4px !important;
+    padding: 10px 0px !important;
+}
+
+.debugMsg{
+    text-align: center !important;
+    color: black !important;
+    background-color: rgb(48, 190, 226) !important;
+    border-radius: 0.5rem !important;
+    margin-top: 4px !important;
+    padding: 10px 0px !important;
+}
+
+.heroicon{
+    width: 25px;
+    height: 25px;
+}
+
+.toast-container{
+    margin-right: 1rem;
+    margin-top: 85px;
+}
+
+.nav-tabs .nav-link.active{
+    font-weight: bold !important;
+    border-bottom: none !important;
+    background-color: white !important;
+    border-color: rgba(var(--bs-primary-rgb)) !important;
+}
+
+.nav-tabs .nav-link{
+    border-bottom: none !important;
+    background-color: var(--bs-info-rgb) !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+}
+
+.nav-tabs .nav-link:hover{
+    border-bottom: none;
+}
+
+.tab-pane{
+    border-top: none !important;
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}
+
+#logo{
+    transition: all 250ms;
+}
+
+.navLogo:hover #logo{
+    transform: rotate(20deg);
+}
+
+.fc-daygrid-day-number {
+	padding-right: 20px !important;
+}

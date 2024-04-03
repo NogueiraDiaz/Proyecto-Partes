@@ -1,0 +1,10 @@
+[
+    {"nombre":"1ª Hora", "hora": "08:30"},
+    {"nombre":"2ª Hora", "hora": "09:25"},
+    {"nombre":"3ª Hora", "hora": "10:20"},
+    {"nombre":"Recreo", "hora": "11:15"},
+    {"nombre":"4ª Hora", "hora": "11:45"},
+    {"nombre":"5ª Hora", "hora": "12:40"},
+    {"nombre":"6ª Hora", "hora": "13:35"},
+    {"nombre":"Fin", "hora": "14:30"}
+]
