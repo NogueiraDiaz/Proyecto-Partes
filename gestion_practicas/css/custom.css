@@ -1,0 +1,239 @@
+body {
+  background: rgb(9, 36, 121);
+  background: linear-gradient(
+    297deg,
+    rgba(9, 36, 121, 1) 0%,
+    rgba(0, 185, 255, 1) 100%
+  );
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h3 {
+  margin: 2rem auto 0;
+  color: white;
+  font-size: 30px;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+}
+
+/*------------------------------------------Contenido central-------------------------------------------------------------*/
+.central {
+  width: 90vw;
+  overflow-x: auto;
+  margin: 2rem auto;
+}
+
+.central .btn {
+  margin: 5px;
+}
+
+/*formato formularios*/
+.central-form {
+  width: 90vw;
+  margin: auto;
+}
+
+.central-form div.col-lg-4,
+.central-form div.col-lg-6 {
+  margin-top: 2rem;
+}
+
+.central-form #anexos div {
+  margin-top: 2rem;
+}
+
+/*-------------------------------------------------------------Scrollbar-------------------------------------------------------------*/
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
+.central::-webkit-scrollbar-thumb {
+  background: rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  border: 1px solid rgb(255, 255, 255);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.473);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #cfcfcf;
+}
+
+/*------------------------------------------botones-------------------------------------------------------------*/
+
+.botones {
+  border-color: white;
+  color: white;
+  margin: 5px;
+}
+
+.botones:hover {
+  background-color: white;
+}
+
+.botones-guardar {
+  border-color: white;
+  background-color: rgba(0, 0, 0, 0.25);
+  color: white;
+  margin: 5px;
+  width: 100%;
+}
+
+.botones-guardar:hover {
+  border-color: transparent;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/*------------------------------------------FOOTER-------------------------------------------------------------*/
+footer {
+  margin-top: auto;
+  border-top: 1px solid white;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+footer ul {
+  list-style: none;
+}
+
+/*--------------------------------------Mensaje flotante------------------------------------------------------------*/
+.deselected {
+  position: relative;
+  display: inline-block;
+}
+
+.deselected .texto-deselected {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.deselected:hover .texto-deselected {
+  visibility: visible;
+  opacity: 1;
+}
+
+/*--------------------------------------Buscador------------------------------------------------------------*/
+.buscador {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.buscador form {
+  display: flex;
+  width: 15rem;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.buscador form:nth-child(2) {
+  margin-left: 2rem;
+}
+
+.buscador select {
+  width: 5rem;
+  text-align: center;
+}
+
+.buscador input::placeholder {
+  text-align: center;
+}
+
+.buscador select,
+.buscador input,
+.buscador button {
+  margin: 5px;
+}
+
+.buscador button {
+  width: 10rem;
+}
+
+@media (max-width: 576px) {
+  .buscador {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/*----------------------------------------------------Elementos formularios--------------------------------------------------------------------*/
+.errorInput {
+  border-color: #ff5252;
+  box-shadow: 0 0 20px #ff5252;
+}
+
+.errorCheckBox {
+  border: 2px solid #ff5252;
+}
+
+.añadirInput {
+  align-self: center;
+  padding-top: 30px;
+}
+
+/*------------------------------------------------------Paginacion-------------------------------------------------------------------------*/
+.antSig,
+.inter {
+  background-color: white;
+  color: rgb(0, 60, 255);
+  padding: 0.25em;
+  border: 1px solid rgb(0, 60, 255);
+  border-radius: 5px;
+  text-decoration: none;
+  margin-right: 0.5em;
+  font-size: 16px;
+}
+
+.antSig:hover,
+.inter.active,
+.inter:hover {
+  background-color: rgb(0, 119, 255);
+  color: white;
+  border: 1px solid white;
+}
+
+.inter {
+  padding: 0.25em 0.5em 0 0.5em;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center∫;
+}

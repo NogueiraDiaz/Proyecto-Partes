@@ -1,0 +1,13 @@
+h2{
+    text-align: center;
+}
+
+form{
+    margin-top: 5vh;
+    text-align: center;
+}
+
+form a, form button{
+    margin: auto 8vw;
+    transform: scale(2);
+}

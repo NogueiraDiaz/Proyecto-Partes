@@ -1,0 +1,70 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+    <title>Zona Admin</title>
+</head>
+
+<body>
+      <nav class="navbar bg-dark z-3 w-100">
+        <div class="container-fluid">
+            <img src="img/julioverne.png" width="70" height="58" class="d-inline-block align-text-top m-2">
+            <h1 class="text-white">IES Julio Verne (Bargas - Toledo)</h1>
+            <!-- Debe redirigir al login al salir -->
+            <button class="btn btn-outline-primary"><i class="bi bi-box-arrow-right"><a href="index.php"></a></i></button>
+        </div>
+      </nav>
+
+    <div class="container-fluid " style="height: 200px; border:1px solid black">
+		<div class="px-5 pt-5 text-center">
+			<h3>Buscar Alumno</h3>
+            <form method="POST" action="/TFG-2-DAW-/Zona_Profesor/ZonaProfesor.php">
+				<div class="m-auto">
+                    <label for="nombreAlumno">Nombre:</label>
+					<input type="text" name="nombreAlumno">
+                    <label for="primerApellidoAlumno">Primer Apellido:</label>
+					<input type="text" name="primerApellidoAlumno">
+                    <label for="segundoApellidoAlumno">Segundo Apellido:</label>
+					<input type="text" name="segundoApellidoAlumno">
+					<button type="submit">Buscar</button>
+				</div>
+			</form>
+		</div> 
+	</div>
+
+    <div class="container-fluid " style="height: 200px; border:1px solid black">
+		<div class="px-5 pt-5 text-center">
+			<h3>Listado de alumnos</h3>
+
+            <table class="table color">
+        <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellidos</th>
+            <th scope="col">DNI</th>
+            <th scope="col">Departamento</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr>
+                        <td> 3</td><td>Juan</td><td>siu</td><td></td></tr>          ?>
+        </tbody>
+      </table>
+            
+		</div> 
+	</div>
+</body>
+</html>
