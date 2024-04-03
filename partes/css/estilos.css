@@ -1,0 +1,230 @@
+.mibordeverde{
+    border: 1px solid #00ADB5 !important;
+    border-radius: 5px;
+}
+body{
+   /* background: url("../image/" );*/
+   background: linear-gradient(to top, #00ADB5, #393E46) no-repeat center center fixed;
+
+margin: 0 auto;
+}
+video{
+    position: fixed;
+
+    min-height: 100%;
+    min-width: 100%;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translateX(-50%) translateY(-50%);
+
+    z-index: -1;
+}
+
+.panel-default, .panel-body, panel-footer{
+    background:transparent !important;
+}
+
+.panel-heading {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+.panel-heading {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+.miborde{
+    border-radius: 5px;
+}
+.micolorrojo{
+    color: red;
+}
+.micolorparte{
+    color: #00f2ff;
+    font-weight: bold;
+    text-shadow: #393E46 0.1em 0.1em 0.2em;
+}
+
+.mifuente{
+    font-size: 0.9em;
+}
+
+.mimargen{
+    margin: 1.1em;
+}
+.mipaddingtitulo{
+    margin:0px;
+    padding: 0.3em !important;
+}
+h3,.sinmargen{
+    margin: 0px;
+    padding: 0px;
+}
+h2{
+    font-size: 2em;
+}
+.mipadding{
+    padding: 1.1em;
+}
+.mipaddingsesion{
+    padding:0.5em 0 0 1.1em;
+}
+.mimargensuperior40 {
+    margin-top: 120px;
+    padding: 0px 20px 20px 20px;
+}
+
+.mimargensuperior5 {
+    margin-top: 5px;
+}
+.mimargensuperior15 {
+    margin-top: 15px;
+}
+
+.mipaddinginferior {
+    padding-bottom: 5px;
+}
+
+.miquitarborder{
+    border:none; 
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+}
+.mimargesuperiortabla {
+    margin:10px 20px 20px 20px;
+}
+
+.mimargenizquierdo {
+    margin-left: 25px;
+}
+
+.mimargensuperior15 {
+    margin-top: 15px;
+}
+
+.mifondoGlow{
+    background: #393E46;
+    border-radius: 15px;
+    -webkit-box-shadow:0px 0px 79px 39px rgba(0,172,181,0.9);
+-moz-box-shadow: 0px 0px 79px 39px rgba(0,172,181,0.9);
+box-shadow: 0px 0px 79px 39px rgba(0,172,181,0.9);
+}
+.mifondo{
+    background: #393E46;
+    border-radius: 15px;
+}
+
+.micoloretiqueta{
+    color:#eeeeee;
+}
+
+.form-signin-heading, .micolor{
+    color:#ddd;
+}
+
+.miversalita{
+    font-variant: small-caps;
+}
+
+.mitama{
+    font-size: 0.95em;
+}
+
+.minegrita{
+    font-weight:bold;
+}
+
+.btn-primary{
+    background-color: transparent;
+}
+
+
+.mibtn-success {
+    background-color: transparent;
+}
+
+.btn-danger{
+    background-color: transparent;
+}
+
+.btn-success{
+    background-color:transparent;
+    border: 1px solid #00ADB5;
+    border-radius: 15px;
+}
+.btn-info{
+    background-color:transparent;
+}
+
+.navbar{
+    background-color: #393E46 !important;
+}
+
+tr:hover{
+    color:#00ADB5;
+}
+select:invalid { color: grey; }
+
+@media screen and (max-width: 600px) {
+    table {
+        width:100%;
+    }
+    thead {
+        display: none;
+    }
+    tr:nth-of-type(2n) {
+        background-color: inherit;
+    }
+    tr td:first-child {
+        background: #393E46;
+        font-weight:bold;
+        font-size:1.3em;
+    }
+    tbody td {
+        display: block;
+        text-align:center;
+    }
+    tbody td:before {
+        content: attr(data-th);
+        display: block;
+        text-align:center;
+    }
+}
+.btn.disabled {
+    pointer-events: auto;
+}
+.tooltip1 {
+    position: relative !important;
+    display: inline-block !important;
+    
+    
+}
+  
+.tooltip1 .tooltiptext {
+    visibility: hidden;
+    width: 80% !important;
+    background-color: #393E46 !important;
+    color: #00ADB5 !important;
+    text-align: center !important;
+    border-radius: 6px !important;
+    padding: 5% 0 !important;
+    position: absolute !important;
+    z-index: 20 !important;
+    top: -150% !important;
+    left: 10% !important;
+}
+  
+.tooltip1 .tooltiptext::after {
+    content: "";
+    position: absolute !important;
+    top: 1150% !important;
+    right: 900% !important;
+    margin-top: -2px !important;
+    border-width: 5px !important;
+    border-style: solid !important;
+    border-color: transparent black transparent transparent !important;
+}
+  
+.tooltip1:hover .tooltiptext {
+    visibility: visible !important;
+}
