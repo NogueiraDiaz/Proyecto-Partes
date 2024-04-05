@@ -5,6 +5,7 @@
     $conexion = "mysql:dbname=proyectodaw;host:127.0.0.1";
     $usuario = "root";
     $password = "";
+    
     //$conexion = "mysql:host=PMYSQL162.dns-servicio.com:3306;dbname=9383564_app; charset=UTF8";
     //$usuario = "adminjulioverne";
     //$password = "8e71hqD?z";

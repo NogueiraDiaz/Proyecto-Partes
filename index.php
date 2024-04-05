@@ -54,7 +54,7 @@ require_once('archivosComunes/logueado.php');
                                         <label class="form-label" for="typePasswordX">Contraseña</label>
                                     </div>
                                     <button name="enviar" id="enviar" class="btn btn-outline-light btn-lg px-5" type="submit">Iniciar Sesión</button>
-                                    <p id="usuarioParrafo" hidden>Revise usuario y contraseña</p>
+                                    <p hidden>Revise usuario y contraseña</p>
                                     <p id="permisosParrafo" hidden >El usuario no tiene permisos para iniciar sesión</p>
 
                                    <?php
@@ -94,7 +94,12 @@ require_once('archivosComunes/logueado.php');
             //Hago la conexion a la base de datos
             $db = require_once('archivosComunes/conexion.php');
             //Consulta seleccionando todo de la base de datos donde el email y la clave son los que se ingresa en el formulario
-            $sql = "SELECT * FROM Usuarios where email=?;";
+            $sql = "SELECT * FROM usuarios where email=?;";
+  /*           $sql2 = "SELECT * FROM usuarios where email= 'incidenciasiesbargas@gmail.com' ;";
+            $consulta2 = $db->prepare($sql2);
+            $consulta2->execute();
+            $us = $consulta2->fetch();
+            echo "<p id='usuarioParrafo'>".$us[2]."  ".$us[5]."</p>" ; */
             //Preparo la consulta
             $consulta = $db->prepare($sql);
             //Pasar a traves de un array los valores escritos en el formulario
@@ -106,13 +111,16 @@ require_once('archivosComunes/logueado.php');
          
                 // Como solo va a devolver una linea la consulta ya que el email es unique usamos fetch
                 $us = $consulta->fetch();
-           
-                if (password_verify($clave, $us[5])) {
+                echo "<p id='usuarioParrafo'>".$us[2]."  ".$us[5]."</p>" ;
+                if (/* password_verify($clave, $us[5]) */ $clave == $us[5]) {
                     //Retornar a traves de un array todos los valores del usuario que hizo login
                     return $us;    
              }
                 else {
                     // contraseña incorrecta
+                    echo "<script>
+                    alert('falla aqui')
+                    </script>";
                     return FALSE;
                 }
                 
