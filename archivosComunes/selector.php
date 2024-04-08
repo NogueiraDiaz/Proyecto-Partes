@@ -71,7 +71,7 @@ require_once('loginRequerido.php');
         <img src="../images/mantenimiento2.webp" alt="Partes2">
       </a>
       
-      <a href="../partes/parte_grupo.php" id="partes">
+      <a href="../partes/partes.php" id="partes">
         Partes de Incidencia
         <img src="../images/parte1.png" alt="Partes1">
         <img src="../images/clase2.png" alt="Partes2">
