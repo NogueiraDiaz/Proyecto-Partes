@@ -95,11 +95,6 @@ require_once('archivosComunes/logueado.php');
             $db = require_once('archivosComunes/conexion.php');
             //Consulta seleccionando todo de la base de datos donde el email y la clave son los que se ingresa en el formulario
             $sql = "SELECT * FROM usuarios where email=?;";
-  /*           $sql2 = "SELECT * FROM usuarios where email= 'incidenciasiesbargas@gmail.com' ;";
-            $consulta2 = $db->prepare($sql2);
-            $consulta2->execute();
-            $us = $consulta2->fetch();
-            echo "<p id='usuarioParrafo'>".$us[2]."  ".$us[5]."</p>" ; */
             //Preparo la consulta
             $consulta = $db->prepare($sql);
             //Pasar a traves de un array los valores escritos en el formulario
@@ -112,15 +107,12 @@ require_once('archivosComunes/logueado.php');
                 // Como solo va a devolver una linea la consulta ya que el email es unique usamos fetch
                 $us = $consulta->fetch();
                 echo "<p id='usuarioParrafo'>".$us[2]."  ".$us[5]."</p>" ;
-                if (/* password_verify($clave, $us[5]) */ $clave == $us[5]) {
+                if (password_verify($clave, $us[5]) ) {
                     //Retornar a traves de un array todos los valores del usuario que hizo login
                     return $us;    
              }
                 else {
                     // contraseña incorrecta
-                    echo "<script>
-                    alert('falla aqui')
-                    </script>";
                     return FALSE;
                 }
                 
