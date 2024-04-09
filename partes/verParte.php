@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="../css/principal.css">
     <!-- Bootstrap CSS v5.2.1 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <style>
+        .table-rounded {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,24 +25,24 @@
     </header>
     <main class="p-4">
         <div class=" m-2">
-            <h2 class="text-light rounded-top bg-dark p-2">Partes de la Base de Datos</h2>
+            <h2 class="text-light rounded bg-dark p-2">Partes de la Base de Datos</h2>
             <div class="row">
-                <div class="col-lg-4 col-md-12 mb-2">
+                <div class="col-lg-4 col-md-12 my-2">
                     <input type="text" id="filtroFecha" class="form-control" placeholder="Filtrar por fecha">
                 </div>
-                <div class="col-lg-4 col-md-12 mb-2">
+                <div class="col-lg-4 col-md-12 my-2">
                     <input type="text" id="filtroNombre" class="form-control" placeholder="Filtrar por nombre">
                 </div>
-                <div class="col-lg-4 col-md-12 mb-2">
+                <div class="col-lg-4 col-md-12 my-2">
                     <select id="filtroPuntos" class="form-select">
-                        <option value="">Todos los puntos</option>
+                        <option value="">Filtrar por puntos</option>
                         <option value="3">3 puntos</option>
                         <option value="5">5 puntos</option>
                         <option value="10">10 puntos</option>
                     </select>
                 </div>
             </div>
-            <table id="tablaPartes" class="table table-striped">
+            <table id="tablaPartes" class="table table-striped table-rounded">
                 <thead>
                     <tr>
                         <th>Fecha</th>
@@ -119,8 +125,6 @@
             }
         });
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
