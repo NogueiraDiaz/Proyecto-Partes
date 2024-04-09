@@ -39,6 +39,7 @@
             <table id="tablaPartes" class="table table-striped">
                 <thead>
                     <tr>
+                        <th>Fecha</th>
                         <th>Nombre</th>
                         <th>Puntos</th>
                         <!-- Agrega más encabezados según las columnas de tu tabla -->
@@ -52,9 +53,10 @@
                         try {
                             
                             // Preparar la consulta SQL
-                            $consulta = $db->prepare("SELECT u.nombre, p.puntos
+                            $consulta = $db->prepare("SELECT u.nombre, p.fecha, p.puntos 
                                                       FROM partes p
                                                       JOIN usuarios u ON p.dni_Profesor = u.dni
+                                                      ORDER BY p.fecha DESC
                                                     ");
                             
                             $consulta->execute();
@@ -62,6 +64,7 @@
                             // Iterar sobre los resultados y mostrar cada parte en una fila de la tabla
                             while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
                                 echo "<tr>";
+                                echo "<td>" . $row['fecha'] . "</td>";
                                 echo "<td>" . $row['nombre'] . "</td>";
                                 echo "<td>" . $row['puntos'] . "</td>";
                                 // Agrega más columnas según las columnas de tu base de datos
