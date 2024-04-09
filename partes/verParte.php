@@ -106,10 +106,11 @@
 
                 // Iterar sobre las filas de la tabla
                 for (let fila of tablaPartes) {
-                    const nombre = fila.cells[0].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
-                    const puntos = fila.cells[1].textContent; // Ajusta el índice según las columnas de tu tabla
+                    const fecha = fila.cells[0].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
+                    const nombre = fila.cells[1].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
+                    const puntos = fila.cells[2].textContent; // Ajusta el índice según las columnas de tu tabla
                     // Verificar si la fila coincide con los filtros
-                    const cumpleFiltroFecha = nombre.includes(textoFecha) || textoFecha === "";
+                    const cumpleFiltroFecha = fecha.includes(textoFecha) || textoFecha === "";
                     const cumpleFiltroNombre = nombre.includes(textoNombre) || textoNombre === "";
                     const cumpleFiltroPuntos = valorPuntos === "" || puntos === valorPuntos;
                     // Mostrar u ocultar la fila según los filtros
