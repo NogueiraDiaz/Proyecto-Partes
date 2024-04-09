@@ -12,13 +12,20 @@
           <li class="nav-item ms-lg-4">'?>
             <a class="nav-link  <?php if(str_contains($_SERVER['SCRIPT_NAME'],'ponerParte.php')) echo 'active' ?>"  href="ponerParte.php">Poner Parte</a>
           <?php echo '</li>';
+          
           if ($_SESSION['usuario_login']['rol'] == "0") {
             echo'  <li class="nav-item">'?>
             <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'verPartes.php')) echo 'active' ?>"  href="verParte.php">Ver Partes</a>
-            <?php echo '</li>
-          <li class="nav-item ms-lg-5">'?>
+            <?php echo '</li>';
+            
+             echo '<li class="nav-item">'?>
+          <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'verExpulsiones.php')) echo 'active' ?>"  href="verExpulsiones.php">Ver Expulsiones</a>
+          <?php echo '</li>';
+
+          echo '<li class="nav-item ms-lg-5">'?>
           <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'importarAlumnos.php')) echo 'active' ?>"  href="importarAlumno.php">Importar Alumnos</a>
           <?php echo '</li>';
+          
           }
         echo '</ul>       
          <ul class="navbar-nav me-right mb-2 mb-lg-0">
