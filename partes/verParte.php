@@ -61,7 +61,7 @@
                             // Preparar la consulta SQL
                             $consulta = $db->prepare("SELECT u.nombre, p.fecha, p.puntos 
                                                       FROM partes p
-                                                      JOIN usuarios u ON p.dni_Profesor = u.dni
+                                                      JOIN usuarios u ON p.cod_usuario = u.dni
                                                       ORDER BY p.fecha DESC
                                                     ");
                             

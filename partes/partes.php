@@ -19,7 +19,7 @@
     </header>
     <main>
         <div class="row col-12 m-auto g-4 p-5">
-        <div class="card col-7 g-3 m-auto my-3 bg-dark text-light">
+            <div class="card col-7 g-3 m-auto my-3 bg-dark text-light">
                 <div class="row">
                     <div class="col-2 d-lg-block d-none">
                         <img src="./img/escribir.jpg" class="rounded-start" alt="foto" style="height: 150px; margin-left: -8px;">
