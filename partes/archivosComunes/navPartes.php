@@ -9,15 +9,15 @@
       </button>
       <div class="collapse navbar-collapse  text-center" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
-          <li class="nav-item ms-4">'?>
+          <li class="nav-item ms-lg-4">'?>
             <a class="nav-link  <?php if(str_contains($_SERVER['SCRIPT_NAME'],'ponerParte.php')) echo 'active' ?>"  href="ponerParte.php">Poner Parte</a>
           <?php echo '</li>';
           if ($_SESSION['usuario_login']['rol'] == "0") {
             echo'  <li class="nav-item">'?>
-            <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'verPartes.php')) echo 'active' ?>"  href="verPartes.php">Ver Partes</a>
+            <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'verPartes.php')) echo 'active' ?>"  href="verParte.php">Ver Partes</a>
             <?php echo '</li>
-          <li class="nav-item ms-5">'?>
-          <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'importarAlumnos.php')) echo 'active' ?>"  href="importar.php">Importar Alumnos</a>
+          <li class="nav-item ms-lg-5">'?>
+          <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'importarAlumnos.php')) echo 'active' ?>"  href="importarAlumno.php">Importar Alumnos</a>
           <?php echo '</li>';
           }
         echo '</ul>       
