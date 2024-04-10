@@ -17,24 +17,24 @@
         ?>
     </header>
     <main>
-        <div class="container mt-5" style="max-width: 500px;">
-            <h1>Máximo 20 archivos simultáneos.</h1>
-            <p> El hosting no soporta más de 20 hojas de cálculo en el proceso de la importación</p>
+        <div class="container mt-5 g-3" style="max-width: 500px;">
+            <h2 class="text-decoration-underline mb-5">Importar Alumnos </h2>
+            <p class="mb-5"> Seleccione un archivo de hoja de calculo para importar los alumnos</p>
 
             <form method="post" enctype="multipart/form-data">
-                <div class="mb-3">
+                <div class="mb-3 g-3">
                     <label for="archivo" class="form-label">Seleccionar archivo:</label>
                     <input type="file" class="form-control" id="archivo" name="archivo[]" multiple>
                 </div>
-                <button type="submit" class="btn btn-primary">Importar</button>
+                <button type="submit" class="btn btn-primary ">Importar</button>
             </form>
         </div>
-        <div class="container my-5" style="max-width: 500px;">
+        <div class="container my-5 py-2" style="max-width: 500px;">
             <!-- PHP_SELF para enviar al mismo archivo -->
             <form method="POST" action="borrarhorarios.php">
                 <label for="archivo" class="form-label">Eliminar todos los alumnos importados:</label>
 
-                <button type="submit" class="btn btn-primary ms-4">Eliminar alumnos</button>
+                <button type="submit" class="btn btn-primary ms-4 ">Eliminar alumnos</button>
 
             </form>
 

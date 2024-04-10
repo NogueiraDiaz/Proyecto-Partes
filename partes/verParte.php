@@ -23,7 +23,7 @@
         require_once "archivosComunes/navPartes.php";
         ?>
     </header>
-    <main class="p-4">
+    <main class="p-4 col-11 m-auto">
         <div class=" m-2">
             <h2 class="text-light rounded bg-dark p-2 px-3">Partes de la Base de Datos</h2>
             <div class="row">

@@ -63,28 +63,21 @@ require_once "../archivosComunes/conexion.php";
 try {
     // Obtener el rol del usuario
     $rol_usuario = $_SESSION['usuario_login']['rol']; // Asegúrate de ajustar esto según tu sistema de autenticación
-
+    $query = " ";
     // Preparar la consulta SQL
-    if ($rol_usuario == 0) {
-        // Si el rol del usuario es 0, mostrar todas las partes
-        $consulta = $db->prepare("SELECT CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, p.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto
-                                FROM partes p
-                                JOIN usuarios u ON p.cod_usuario = u.cod_usuario
-                                JOIN alumnos a ON p.matricula_Alumno = a.matricula
-                                ORDER BY p.fecha DESC
-                            ");
-    } else {
-        // Si el rol del usuario es diferente de 0, mostrar solo las partes del propio usuario
+    if ($rol_usuario == 1) {
+        // Si el rol del usuario es 1, mostrar todas las partes
         $id_usuario = $_SESSION['usuario_login']['cod_usuario']; // Asegúrate de ajustar esto según tu sistema de autenticación
-        $consulta = $db->prepare("SELECT CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, p.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto
+        $query = "WHERE u.cod_usuario = $id_usuario";
+    }
+
+    $consulta = $db->prepare("SELECT CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, p.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto
                                 FROM partes p
                                 JOIN usuarios u ON p.cod_usuario = u.cod_usuario
                                 JOIN alumnos a ON p.matricula_Alumno = a.matricula
-                                WHERE u.cod_usuario = :id_usuario
+                                $query
                                 ORDER BY p.fecha DESC
                             ");
-        $consulta->bindParam(":id_usuario", $id_usuario, PDO::PARAM_INT);
-    }
 
     $consulta->execute();
 
