@@ -33,10 +33,7 @@
                     </div>
                 </div>
             </div>
-
-            <?php if ($_SESSION['usuario_login']['rol'] == "0") {
-                 echo "
-                    <div class='card col-7 g-3 m-auto my-3 bg-dark text-light'>
+            <div class='card col-7 g-3 m-auto my-3 bg-dark text-light'>
                     <div class='row'>
                         <div class='col-2 d-lg-block d-none'>
                             <img src='./img/consultar.jpg' class=' rounded-start' alt='foto' style='height: 150px; margin-left: -8px;'>
@@ -49,6 +46,9 @@
                             </div>
                         </div>
                     </div>
+
+            <?php if ($_SESSION['usuario_login']['rol'] == "0") {
+                 echo "
                     </div>
                     <div class='card col-7 g-3 m-auto my-3 bg-dark text-light'>
                     <div class='row'>
@@ -67,14 +67,10 @@
 
             ";} ?>
 
-
-
-
-
     </main>
     <footer>
         <?php
-        require_once "../archivosComunes/footer.php";
+        require_once "./archivosComunes/footerPartes.php";
         ?>
     </footer>
 

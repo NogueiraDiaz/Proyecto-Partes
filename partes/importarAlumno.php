@@ -43,7 +43,7 @@
     </main>
     <footer>
         <?php
-        require_once "../archivosComunes/footer.php";
+        require_once "./archivosComunes/footerPartes.php";
         ?>
     </footer>
 

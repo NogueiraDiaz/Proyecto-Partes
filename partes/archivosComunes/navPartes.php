@@ -12,11 +12,11 @@
           <li class="nav-item ms-lg-4">'?>
             <a class="nav-link  <?php if(str_contains($_SERVER['SCRIPT_NAME'],'ponerParte.php')) echo 'active' ?>"  href="ponerParte.php">Poner Parte</a>
           <?php echo '</li>';
+          echo'  <li class="nav-item">'?>
+          <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'verPartes.php')) echo 'active' ?>"  href="verParte.php">Ver Partes</a>
+          <?php echo '</li>';
           
           if ($_SESSION['usuario_login']['rol'] == "0") {
-            echo'  <li class="nav-item">'?>
-            <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'verPartes.php')) echo 'active' ?>"  href="verParte.php">Ver Partes</a>
-            <?php echo '</li>';
             
              echo '<li class="nav-item">'?>
           <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'verExpulsiones.php')) echo 'active' ?>"  href="verExpulsiones.php">Ver Expulsiones</a>

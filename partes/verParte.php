@@ -25,15 +25,18 @@
     </header>
     <main class="p-4">
         <div class=" m-2">
-            <h2 class="text-light rounded bg-dark p-2">Partes de la Base de Datos</h2>
+            <h2 class="text-light rounded bg-dark p-2 px-3">Partes de la Base de Datos</h2>
             <div class="row">
-                <div class="col-lg-4 col-md-12 my-2">
+                <div class="col-lg-3 col-md-6 my-2">
                     <input type="text" id="filtroFecha" class="form-control" placeholder="Filtrar por fecha">
                 </div>
-                <div class="col-lg-4 col-md-12 my-2">
-                    <input type="text" id="filtroNombre" class="form-control" placeholder="Filtrar por nombre">
+                <div class="col-lg-3 col-md-6 my-2">
+                    <input type="text" id="filtroNombreProfesor" class="form-control" placeholder="Filtrar por nombre del profesor">
                 </div>
-                <div class="col-lg-4 col-md-12 my-2">
+                <div class="col-lg-3 col-md-6 my-2">
+                    <input type="text" id="filtroNombreAlumno" class="form-control" placeholder="Filtrar por nombre del alumno">
+                </div>
+                <div class="col-lg-3 col-md-6 my-2">
                     <select id="filtroPuntos" class="form-select">
                         <option value="">Filtrar por puntos</option>
                         <option value="3">3 puntos</option>
@@ -46,7 +49,8 @@
                 <thead>
                     <tr>
                         <th>Fecha</th>
-                        <th>Nombre</th>
+                        <th>Nombre Profesor</th>
+                        <th>Nombre Alumno</th>
                         <th>Puntos</th>
                         <!-- Agrega más encabezados según las columnas de tu tabla -->
                     </tr>
@@ -59,9 +63,10 @@
                         try {
                             
                             // Preparar la consulta SQL
-                            $consulta = $db->prepare("SELECT u.nombre, p.fecha, p.puntos 
+                            $consulta = $db->prepare("SELECT CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, p.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto
                                                       FROM partes p
-                                                      JOIN usuarios u ON p.cod_usuario = u.dni
+                                                      JOIN usuarios u ON p.cod_usuario = u.cod_usuario
+                                                      JOIN alumnos a ON p.matricula_Alumno = a.matricula
                                                       ORDER BY p.fecha DESC
                                                     ");
                             
@@ -71,7 +76,8 @@
                             while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
                                 echo "<tr>";
                                 echo "<td>" . $row['fecha'] . "</td>";
-                                echo "<td>" . $row['nombre'] . "</td>";
+                                echo "<td>" . $row['nombreProfesorCompleto'] . "</td>";
+                                echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
                                 echo "<td>" . $row['puntos'] . "</td>";
                                 // Agrega más columnas según las columnas de tu base de datos
                                 echo "</tr>";
@@ -89,38 +95,43 @@
     </main>
     <footer>
         <?php
-        require_once "../archivosComunes/footer.php";
+        require_once "./archivosComunes/footerPartes.php";
         ?>
     </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const filtroFecha = document.getElementById("filtroFecha");
-            const filtroNombre = document.getElementById("filtroNombre");
+            const filtroNombreProfesor = document.getElementById("filtroNombreProfesor");
+            const filtroNombreAlumno = document.getElementById("filtroNombreAlumno");
             const filtroPuntos = document.getElementById("filtroPuntos");
             const tablaPartes = document.getElementById("tablaPartes").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 
             // Agregar event listeners para los campos de filtro
             filtroFecha.addEventListener("input", filtrarTabla);
-            filtroNombre.addEventListener("input", filtrarTabla);
+            filtroNombreProfesor.addEventListener("input", filtrarTabla);
+            filtroNombreAlumno.addEventListener("input", filtrarTabla);
             filtroPuntos.addEventListener("change", filtrarTabla);
 
             function filtrarTabla() {
                 const textoFecha = filtroFecha.value.toLowerCase();
-                const textoNombre = filtroNombre.value.toLowerCase();
+                const textoNombreProfesor = filtroNombreProfesor.value.toLowerCase();
+                const textoNombreAlumno = filtroNombreAlumno.value.toLowerCase();
                 const valorPuntos = filtroPuntos.value;
 
                 // Iterar sobre las filas de la tabla
                 for (let fila of tablaPartes) {
                     const fecha = fila.cells[0].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
-                    const nombre = fila.cells[1].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
-                    const puntos = fila.cells[2].textContent; // Ajusta el índice según las columnas de tu tabla
+                    const nombreProfesor = fila.cells[1].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
+                    const nombreAlumno = fila.cells[2].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
+                    const puntos = fila.cells[3].textContent; // Ajusta el índice según las columnas de tu tabla
                     // Verificar si la fila coincide con los filtros
                     const cumpleFiltroFecha = fecha.includes(textoFecha) || textoFecha === "";
-                    const cumpleFiltroNombre = nombre.includes(textoNombre) || textoNombre === "";
+                    const cumpleFiltroNombreProfesor = nombreProfesor.includes(textoNombreProfesor) || textoNombreProfesor === "";
+                    const cumpleFiltroNombreAlumno = nombreAlumno.includes(textoNombreAlumno) || textoNombreAlumno === "";
                     const cumpleFiltroPuntos = valorPuntos === "" || puntos === valorPuntos;
                     // Mostrar u ocultar la fila según los filtros
-                    fila.style.display = cumpleFiltroFecha && cumpleFiltroNombre && cumpleFiltroPuntos ? "" : "none";
+                    fila.style.display = cumpleFiltroFecha && cumpleFiltroNombreProfesor && cumpleFiltroNombreAlumno && cumpleFiltroPuntos ? "" : "none";
                 }
             }
         });
