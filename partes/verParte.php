@@ -23,7 +23,7 @@
         require_once "archivosComunes/navPartes.php";
         ?>
     </header>
-    <main class="p-4 col-11 m-auto">
+    <main class="p-4">
         <div class=" m-2">
             <h2 class="text-light rounded bg-dark p-2 px-3">Partes de la Base de Datos</h2>
             <div class="row">
@@ -52,60 +52,52 @@
                         <th>Nombre Profesor</th>
                         <th>Nombre Alumno</th>
                         <th>Puntos</th>
-                        <!-- Agrega más encabezados según las columnas de tu tabla -->
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                <?php
-// Incluir el archivo de conexión a la base de datos
-require_once "../archivosComunes/conexion.php";
+                    <?php
+                    // Incluir el archivo de conexión a la base de datos
+                    require_once "../archivosComunes/conexion.php";
 
-try {
-    // Obtener el rol del usuario
-    $rol_usuario = $_SESSION['usuario_login']['rol']; // Asegúrate de ajustar esto según tu sistema de autenticación
+                    try {
+                        // Obtener el rol del usuario
+                        $rol_usuario = $_SESSION['usuario_login']['rol']; // Asegúrate de ajustar esto según tu sistema de autenticación
+                        $query = " ";
+                        // Preparar la consulta SQL
+                        if ($rol_usuario == 1) {
+                            // Si el rol del usuario es 1, mostrar todas las partes
+                            $id_usuario = $_SESSION['usuario_login']['cod_usuario']; // Asegúrate de ajustar esto según tu sistema de autenticación
+                            $query = "WHERE u.cod_usuario = $id_usuario";
+                        }
 
-    // Preparar la consulta SQL
-    if ($rol_usuario == 0) {
-        // Si el rol del usuario es 0, mostrar todas las partes
-        $consulta = $db->prepare("SELECT CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, p.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto
+                        $consulta = $db->prepare("SELECT p.cod_parte, CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, p.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, p.materia, p.descripcion
                                 FROM partes p
                                 JOIN usuarios u ON p.cod_usuario = u.cod_usuario
                                 JOIN alumnos a ON p.matricula_Alumno = a.matricula
+                                $query
                                 ORDER BY p.fecha DESC
                             ");
-    } else {
-        // Si el rol del usuario es diferente de 0, mostrar solo las partes del propio usuario
-        $id_usuario = $_SESSION['usuario_login']['cod_usuario']; // Asegúrate de ajustar esto según tu sistema de autenticación
-        $consulta = $db->prepare("SELECT CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, p.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto
-                                FROM partes p
-                                JOIN usuarios u ON p.cod_usuario = u.cod_usuario
-                                JOIN alumnos a ON p.matricula_Alumno = a.matricula
-                                WHERE u.cod_usuario = :id_usuario
-                                ORDER BY p.fecha DESC
-                            ");
-        $consulta->bindParam(":id_usuario", $id_usuario, PDO::PARAM_INT);
-    }
 
-    $consulta->execute();
+                        $consulta->execute();
 
-    // Iterar sobre los resultados y mostrar cada parte en una fila de la tabla
-    while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
-        echo "<tr>";
-        echo "<td>" . $row['fecha'] . "</td>";
-        echo "<td>" . $row['nombreProfesorCompleto'] . "</td>";
-        echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
-        echo "<td>" . $row['puntos'] . "</td>";
-        // Agrega más columnas según las columnas de tu base de datos
-        echo "</tr>";
-    }
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
+                        // Iterar sobre los resultados y mostrar cada parte en una fila de la tabla
+                        while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
+                            echo "<tr>";
+                            echo "<td>" . $row['fecha'] . "</td>";
+                            echo "<td>" . $row['nombreProfesorCompleto'] . "</td>";
+                            echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
+                            echo "<td>" . $row['puntos'] . "</td>";
+                            echo "<td><a class='text-black text-decoration-none' href='detalle_parte.php?cod_parte=" . $row['cod_parte'] . "'>></a></td>"; // Flecha simple hacia la derecha
+                            echo "</tr>";
+                        }
+                    } catch (PDOException $e) {
+                        echo "Error: " . $e->getMessage();
+                    }
 
-// Cerrar la conexión a la base de datos
-$db = null;
-?>
-
+                    // Cerrar la conexión a la base de datos
+                    $db = null;
+                    ?>
                 </tbody>
             </table>
         </div>
@@ -155,6 +147,7 @@ $db = null;
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/bootstrap-icons.min.js"></script> <!-- Agregamos la librería de Bootstrap Icons -->
 </body>
 
 </html>
