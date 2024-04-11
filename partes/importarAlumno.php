@@ -21,7 +21,7 @@
             <h2 class="text-decoration-underline mb-5">Importar Alumnos </h2>
             <p class="mb-5"> Seleccione un archivo de hoja de calculo para importar los alumnos</p>
 
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" action="importrar.php"  enctype="multipart/form-data">
                 <div class="mb-3 g-3">
                     <label for="archivo" class="form-label">Seleccionar archivo:</label>
                     <input type="file" class="form-control" id="archivo" name="archivo[]" multiple>
@@ -51,5 +51,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
+
 
 </html>
