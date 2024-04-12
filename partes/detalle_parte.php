@@ -64,7 +64,8 @@
                         echo "</div>";
                     } else {
                         // Mostrar un mensaje si la parte no fue encontrada
-                        echo "<p>No se encontró la parte.</p>";
+                        echo '<h3 class="text-black rounded bg-light p-2 px-3">No se encontro el parte</h3>';
+
                     }
                 } else {
                     // Mostrar un mensaje si no se proporcionó el parámetro cod_parte
@@ -89,7 +90,7 @@
         function eliminarParte(cod_parte) {
             if (confirm("¿Estás seguro de que quieres eliminar esta parte?")) {
                 // Redirigir a la página de eliminación con el código de la parte
-                window.location.href = "eliminar_parte.php?cod_parte=" + cod_parte;
+                window.location.href = "./funcionalidad/eliminarParte.php?cod_parte=" + cod_parte;
             }
         }
     </script>

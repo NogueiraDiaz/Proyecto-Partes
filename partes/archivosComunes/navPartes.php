@@ -13,7 +13,7 @@
             <a class="nav-link  <?php if(str_contains($_SERVER['SCRIPT_NAME'],'ponerParte.php')) echo 'active' ?>"  href="ponerParte.php">Poner Parte</a>
           <?php echo '</li>';
           echo'  <li class="nav-item">'?>
-          <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'verPartes.php')) echo 'active' ?>"  href="verParte.php">Ver Partes</a>
+          <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'verPartes.php')) echo 'active' ?>"  href="verPartes.php">Ver Partes</a>
           <?php echo '</li>';
           
           if ($_SESSION['usuario_login']['rol'] == "0") {

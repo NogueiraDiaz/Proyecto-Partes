@@ -25,6 +25,17 @@
     </header>
     <main class="p-4">
         <div class=" m-2">
+            <?php
+            // Verificar si se ha recibido el parámetro 'eliminado' en la URL
+            if (isset($_GET['eliminado'])) {
+                // Mostrar el mensaje según el valor del parámetro
+                if ($_GET['eliminado'] = 1) {
+                    echo '<h3 class="text-light rounded bg-success p-2 px-3">Parte eliminado exitosamente</h3>';
+                } elseif ($_GET['eliminado'] = 0) {
+                    echo '<h3 class="text-light rounded bg-danger p-2 px-3">No se ha podido eliminar el parte. Intentelo más tarde</h3>';
+                }
+            }
+            ?>
             <h2 class="text-light rounded bg-dark p-2 px-3">Partes de la Base de Datos</h2>
             <div class="row">
                 <div class="col-lg-3 col-md-6 my-2">
@@ -80,6 +91,8 @@
                             ");
 
                         $consulta->execute();
+
+
 
                         // Iterar sobre los resultados y mostrar cada parte en una fila de la tabla
                         while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {

@@ -42,7 +42,7 @@
                             <div class='card-body'>
                                 <h4 class='card-title text-decoration-underline'>Ver Partes</h4>
                                 <p class='card-text'>Apartado para visualizar los partes que han sido puestos</p>
-                                <a href='verParte.php'><button type='button' class='btn btn-light'>Ver Partes</button></a>
+                                <a href='verPartes.php'><button type='button' class='btn btn-light'>Ver Partes</button></a>
                             </div>
                         </div>
                     </div>
