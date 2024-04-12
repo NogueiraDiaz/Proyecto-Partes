@@ -5,6 +5,7 @@ require_once("../archivosComunes/conexion.php");
 if (isset($_FILES['archivo']) && !empty($_FILES['archivo']['name'][0])) {
     // Obtener el número de archivos seleccionados
     $numArchivos = count($_FILES['archivo']['name']);
+    $db->beginTransaction();
     $eliminar =$db->prepare("DELETE FROM alumnos");
     $eliminar->execute();
     // Recorrer cada archivo
@@ -31,7 +32,7 @@ if (isset($_FILES['archivo']) && !empty($_FILES['archivo']['name'][0])) {
             }
 
         }
-
+        
         foreach ($lista as $datos) {
         
             $matricula = $datos[0];
@@ -40,18 +41,26 @@ if (isset($_FILES['archivo']) && !empty($_FILES['archivo']['name'][0])) {
             $grupo = trim($datos[3]);
 
             if($matricula != ""){
-                
-                $conexion =$db->prepare("INSERT INTO alumnos (matricula, nombre, apellidos, grupo)
-                VALUES ( :matricula , :nombre, :apellidos, :grupo)");
-                $conexion->execute(array(":matricula" => $matricula, ":nombre" => $nombre, ":apellidos" => $apellidos, ":grupo" => $grupo));
-                
+                try {
+                    // Intentamos ejecutar la inserción en la base de datos
+                    $conexion = $db->prepare("INSERT INTO alumnos (matricula, nombre, apellidos, grupo)
+                        VALUES (:matricula, :nombre, :apellidos, :grupo)");
+                    $conexion->execute(array(":matricula" => $matricula, ":nombre" => $nombre, ":apellidos" => $apellidos, ":grupo" => $grupo));
+                } catch (PDOException $e) {
+                    // Si ocurre un error, mostramos un mensaje de error o realizamos alguna otra acción necesaria
+                    $db->rollBack();
+                    header("location:importarAlumno.php?Añadido=0");
+                }
             }
          }
+
+         $db->commit();
+         header("location:importarAlumno.php?Añadido=1");
 
         
 
     }
 }   
-
+header("location:importarAlumno.php");
 
 ?>
