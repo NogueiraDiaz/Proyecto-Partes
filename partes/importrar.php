@@ -56,10 +56,6 @@ if (isset($_FILES['archivo']) && !empty($_FILES['archivo']['name'][0])) {
             $db->rollBack();
             header("location:importarAlumno.php?Añadido=0");
         }
-
-
-        
-
     }
 } else{
     header("location:importarAlumno.php");
