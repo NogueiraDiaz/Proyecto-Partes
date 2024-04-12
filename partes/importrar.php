@@ -32,35 +32,36 @@ if (isset($_FILES['archivo']) && !empty($_FILES['archivo']['name'][0])) {
             }
 
         }
-        
-        foreach ($lista as $datos) {
-        
-            $matricula = $datos[0];
-            $nombre = $datos[1];
-            $apellidos = $datos[2];
-            $grupo = trim($datos[3]);
+        try {
+            foreach ($lista as $datos) {
+            
+                $matricula = $datos[0];
+                $nombre = $datos[1];
+                $apellidos = $datos[2];
+                $grupo = trim($datos[3]);
 
-            if($matricula != ""){
-                try {
-                    // Intentamos ejecutar la inserción en la base de datos
-                    $conexion = $db->prepare("INSERT INTO alumnos (matricula, nombre, apellidos, grupo)
-                        VALUES (:matricula, :nombre, :apellidos, :grupo)");
-                    $conexion->execute(array(":matricula" => $matricula, ":nombre" => $nombre, ":apellidos" => $apellidos, ":grupo" => $grupo));
-                } catch (PDOException $e) {
-                    // Si ocurre un error, mostramos un mensaje de error o realizamos alguna otra acción necesaria
-                    $db->rollBack();
-                    header("location:importarAlumno.php?Añadido=0");
+                if($matricula != ""){
+                        // Intentamos ejecutar la inserción en la base de datos
+                        $conexion = $db->prepare("INSERT INTO alumnos (matricula, nombre, apellidos, grupo)
+                            VALUES (:matricula, :nombre, :apellidos, :grupo)");
+                        $conexion->execute(array(":matricula" => $matricula, ":nombre" => $nombre, ":apellidos" => $apellidos, ":grupo" => $grupo));
+
                 }
             }
-         }
+            $db->commit();
+            header("location:importarAlumno.php?Añadido=1");
 
-         $db->commit();
-         header("location:importarAlumno.php?Añadido=1");
+        } catch (PDOException $e) {
+            // Si ocurre un error, mostramos un mensaje de error o realizamos alguna otra acción necesaria
+            $db->rollBack();
+            header("location:importarAlumno.php?Añadido=0");
+        }
+
 
         
 
     }
 }   
-header("location:importarAlumno.php");
+
 
 ?>
