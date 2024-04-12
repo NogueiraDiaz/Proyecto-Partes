@@ -13,18 +13,23 @@ if (isset($_FILES['archivo']) && !empty($_FILES['archivo']['name'][0])) {
         
 
         $contenidoarchivo = file_get_contents($rutaArchivo);
+
+
+       $codificacion = mb_detect_encoding($contenidoarchivo, 'UTF-8, ISO-8859-1, ISO-8859-15', true);
+
         $contenidoarchivo = explode("\n",$contenidoarchivo);
         $contenidoarchivo = array_filter($contenidoarchivo);
 
         foreach($contenidoarchivo as $file){
-            /* if (str_contains($file, ',')){
+            if($codificacion == "ISO-8859-1"){
+                $file=utf8_encode($file);
+            }
+            if (str_contains($file, ',')){
                 $lista[] = explode(",",$file);
             }else{
                 $lista[] = explode(";",$file);
-            } */
+            }
 
-
-            $lista[] = explode(",",$file);
         }
 
         foreach ($lista as $datos) {
