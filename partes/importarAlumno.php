@@ -13,7 +13,7 @@
             
         if (isset($_GET['Añadido'])) {
                
-            if ($_GET['Añadido'] = 1) {
+            if ($_GET['Añadido'] == 1) {
                     echo '<h3 class="text-light rounded bg-success p-2 px-3">Alumnos insertados exitosamente</h3>';
             } else{
                     echo '<h3 class="text-light rounded bg-danger p-2 px-3">No se ha podido insertados los Alumnos. Compruebe el archivo</h3>';
