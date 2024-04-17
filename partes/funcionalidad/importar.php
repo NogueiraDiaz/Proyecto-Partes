@@ -6,13 +6,12 @@ if (isset($_FILES['archivo']) && !empty($_FILES['archivo']['name'][0])) {
     // Obtener el número de archivos seleccionados
     $numArchivos = count($_FILES['archivo']['name']);
     $db->beginTransaction();
-
-    $tablas = array("alumnos","partes","expulsiones");
-
-    foreach ($tablas as $tabla) {
-        $eliminar = $db->prepare("DELETE FROM $tabla");
-        $eliminar->execute();
-    }
+    $eliminar =$db->prepare("DELETE FROM Expulsiones");
+    $eliminar->execute();
+    $eliminar =$db->prepare("DELETE FROM Partes");
+    $eliminar->execute();
+    $eliminar =$db->prepare("DELETE FROM Alumnos");
+    $eliminar->execute();
     // Recorrer cada archivo
     for ($i = 0; $i < $numArchivos; $i++) {
         $rutaArchivo = $_FILES['archivo']['tmp_name'][$i];
@@ -47,7 +46,7 @@ if (isset($_FILES['archivo']) && !empty($_FILES['archivo']['name'][0])) {
 
                 if($matricula != ""){
                         // Intentamos ejecutar la inserción en la base de datos
-                        $conexion = $db->prepare("INSERT INTO alumnos (matricula, nombre, apellidos, grupo)
+                        $conexion = $db->prepare("INSERT INTO Alumnos (matricula, nombre, apellidos, grupo)
                             VALUES (:matricula, :nombre, :apellidos, :grupo)");
                         $conexion->execute(array(":matricula" => $matricula, ":nombre" => $nombre, ":apellidos" => $apellidos, ":grupo" => $grupo));
 
