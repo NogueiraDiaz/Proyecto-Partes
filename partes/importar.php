@@ -6,8 +6,13 @@ if (isset($_FILES['archivo']) && !empty($_FILES['archivo']['name'][0])) {
     // Obtener el número de archivos seleccionados
     $numArchivos = count($_FILES['archivo']['name']);
     $db->beginTransaction();
-    $eliminar =$db->prepare("DELETE FROM alumnos");
-    $eliminar->execute();
+
+    $tablas = array("alumnos","partes","expulsiones")
+
+    foreach ($tablas as $tabla) {
+        $eliminar = $db->prepare("DELETE FROM $tabla");
+        $eliminar->execute();
+    }
     // Recorrer cada archivo
     for ($i = 0; $i < $numArchivos; $i++) {
         $rutaArchivo = $_FILES['archivo']['tmp_name'][$i];
