@@ -101,7 +101,7 @@
                             echo "<td>" . $row['nombreProfesorCompleto'] . "</td>";
                             echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
                             echo "<td>" . $row['puntos'] . "</td>";
-                            echo "<td><a class='text-black text-decoration-none' href='detalle_parte.php?cod_parte=" . $row['cod_parte'] . "'>></a></td>"; // Flecha simple hacia la derecha
+                            echo "<td><a class='text-black text-decoration-none' href='detalleParte.php?cod_parte=" . $row['cod_parte'] . "'>></a></td>"; // Flecha simple hacia la derecha
                             echo "</tr>";
                         }
                     } catch (PDOException $e) {

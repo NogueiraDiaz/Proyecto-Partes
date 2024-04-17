@@ -7,7 +7,7 @@ if (isset($_FILES['archivo']) && !empty($_FILES['archivo']['name'][0])) {
     $numArchivos = count($_FILES['archivo']['name']);
     $db->beginTransaction();
 
-    $tablas = array("alumnos","partes","expulsiones")
+    $tablas = array("alumnos","partes","expulsiones");
 
     foreach ($tablas as $tabla) {
         $eliminar = $db->prepare("DELETE FROM $tabla");

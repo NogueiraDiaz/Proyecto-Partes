@@ -34,35 +34,49 @@
                 </div>
             </div>
             <div class='card col-7 g-3 m-auto my-3 bg-dark text-light'>
-                    <div class='row'>
-                        <div class='col-2 d-lg-block d-none'>
-                            <img src='./img/consultar.jpg' class=' rounded-start' alt='foto' style='height: 150px; margin-left: -8px;'>
-                        </div>
-                        <div class='col-10'>
-                            <div class='card-body'>
-                                <h4 class='card-title text-decoration-underline'>Ver Partes</h4>
-                                <p class='card-text'>Apartado para visualizar los partes que han sido puestos</p>
-                                <a href='verPartes.php'><button type='button' class='btn btn-light'>Ver Partes</button></a>
-                            </div>
+                <div class='row'>
+                    <div class='col-2 d-lg-block d-none'>
+                        <img src='./img/consultar.jpg' class=' rounded-start' alt='foto' style='height: 150px; margin-left: -8px;'>
+                    </div>
+                    <div class='col-10'>
+                        <div class='card-body'>
+                            <h4 class='card-title text-decoration-underline'>Ver Partes</h4>
+                            <p class='card-text'>Apartado para visualizar los partes que han sido puestos</p>
+                            <a href='verPartes.php'><button type='button' class='btn btn-light'>Ver Partes</button></a>
                         </div>
                     </div>
+                </div>
+            </div>
 
             <?php if ($_SESSION['usuario_login']['rol'] == "0") {
-                 echo "
-                    </div>
+                echo "
                     <div class='card col-7 g-3 m-auto my-3 bg-dark text-light'>
-                    <div class='row'>
-                        <div class='col-2 d-lg-block d-none'>
-                            <img src='./img/expulsion.jpg' class=' rounded-start' alt='foto' style='height: 150px; margin-left: -8px;'>
-                        </div>
-                        <div class='col-10'>
-                            <div class='card-body'>
-                                <h4 class='card-title text-decoration-underline'>Ver Expulsiones</h4>
-                                <p class='card-text'>Apartado para visualizar las expulsiones pendientes de realizar</p>
-                                <a href='verParte.php'><button type='button' class='btn btn-light'>Ver Expulsiones</button></a>
+                        <div class='row'>
+                            <div class='col-2 d-lg-block d-none'>
+                                <img src='./img/expulsion.jpg' class=' rounded-start' alt='foto' style='height: 150px; margin-left: -8px;'>
+                            </div>
+                            <div class='col-10'>
+                                <div class='card-body'>
+                                    <h4 class='card-title text-decoration-underline'>Ver Expulsiones</h4>
+                                    <p class='card-text'>Apartado para visualizar las expulsiones pendientes de realizar</p>
+                                    <a href='verExpulsiones.php'><button type='button' class='btn btn-light'>Ver Expulsiones</button></a>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class='card col-7 g-3 m-auto my-3 bg-dark text-light'>
+                        <div class='row'>
+                            <div class='col-2 d-lg-block d-none'>
+                                <img src='./img/gestion.jpg' class=' rounded-start' alt='foto' style='height: 150px; margin-left: -8px;'>
+                            </div>
+                            <div class='col-10'>
+                                <div class='card-body'>
+                                    <h4 class='card-title text-decoration-underline'>Gestionar Alumnos</h4>
+                                    <p class='card-text'>Apartado para importar, eliminar y modificar alumnos</p>
+                                    <a href='gestionarAlumnos.php'><button type='button' class='btn btn-light'>Gestionar Alumnos</button></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
             ";} ?>
