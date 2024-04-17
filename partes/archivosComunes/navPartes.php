@@ -22,8 +22,8 @@
           <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'verExpulsiones.php')) echo 'active' ?>"  href="verExpulsiones.php">Ver Expulsiones</a>
           <?php echo '</li>';
 
-          echo '<li class="nav-item ms-lg-5">'?>
-          <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'importarAlumnos.php')) echo 'active' ?>"  href="importarAlumno.php">Importar Alumnos</a>
+          echo '<li class="nav-item">'?>
+          <a class="nav-link   <?php if(str_contains($_SERVER['SCRIPT_NAME'],'gestionarAlumnos.php')) echo 'active' ?>"  href="gestionarAlumnos.php">Gestionar Alumnos</a>
           <?php echo '</li>';
           
           }
