@@ -141,7 +141,7 @@ if (isset($_GET['Añadido'])) {
 
                 </div>
 
-                <table class="table  table-bordered table-striped table-hover text-center mt-2" id="listaAlumnos">
+                <table class="table  table-bordered table-striped table-hover text-center mt-2" id="lista">
                     <thead>
                         <tr>
                             <th scope="col">Matrícula</th>

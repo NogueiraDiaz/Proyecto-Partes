@@ -1,5 +1,5 @@
 function mostrarPagina(pagina, filasPorPagina) {
-  var tablaCompleta = document.getElementById("listaAlumnos");
+  var tablaCompleta = document.getElementById("lista");
   var filas = tablaCompleta.getElementsByTagName("tr");
 
   // Calcula el índice inicial y final de las filas que se mostrarán en la página actual
@@ -20,9 +20,19 @@ function mostrarPagina(pagina, filasPorPagina) {
 
   // Calcula el número total de páginas
   var totalPaginas = Math.ceil(filas.length / filasPorPagina);
-
   // Crea los elementos de la paginación
-  for (var k = 1; k <= totalPaginas; k++) {
+  var inicio;
+  if(pagina <= 5){
+    inicio = pagina;
+    fin = 10;
+  }else{
+    inicio = pagina - 5;
+    fin = pagina + 5;
+    if(fin > totalPaginas){
+      fin = totalPaginas;
+    }
+  }
+  for (var k = inicio; k <= fin/*totalPaginas*/; k++) {
     var li = document.createElement("li");
     li.classList.add("page-item");
     var a = document.createElement("a");
