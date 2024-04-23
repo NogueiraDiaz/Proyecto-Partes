@@ -53,16 +53,16 @@ if (isset($_FILES['archivo']) && !empty($_FILES['archivo']['name'][0])) {
                 }
             }
             $db->commit();
-            header("location:importarAlumno.php?Añadido=1");
+            header("location:gestionarAlumnos.php?Añadido=1");
 
         } catch (PDOException $e) {
             // Si ocurre un error, mostramos un mensaje de error o realizamos alguna otra acción necesaria
             $db->rollBack();
-            header("location:importarAlumno.php?Añadido=0");
+            header("location:gestionarAlumnos.php?Añadido=0");
         }
     }
 } else{
-    header("location:importarAlumno.php");
+    header("location:gestionarAlumnos.php");
 } 
 
 

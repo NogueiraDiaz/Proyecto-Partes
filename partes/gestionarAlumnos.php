@@ -14,31 +14,21 @@
 
 
 </head>
-<?php
-if (isset($_GET['Añadido'])) {
-
-    if ($_GET['Añadido'] == 1) {
-        echo '<h3 class="text-light rounded bg-success p-2 px-3">Alumnos insertados exitosamente</h3>';
-    } else {
-        echo '<h3 class="text-light rounded bg-danger p-2 px-3">No se ha podido insertados los Alumnos. Compruebe el archivo</h3>';
-    }
-}
-
-?>
 
 <body>
     <header>
         <?php
 
         require_once "archivosComunes/navPartes.php";
-        require_once ("../archivosComunes/conexion.php");
-        require_once ('../archivosComunes/loginRequerido.php');
+        require_once("../archivosComunes/conexion.php");
+        require_once('../archivosComunes/loginRequerido.php');
         if ($_SESSION['usuario_login']['rol'] != "0") {
             print "
             <script>
               window.location = 'partes.php';
-            </script>";}
-                
+            </script>";
+        }
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $matricula = $_POST['matricula'];
@@ -53,12 +43,25 @@ if (isset($_GET['Añadido'])) {
             $stmt->bindParam(':apellidos', $apellidos);
             $stmt->bindParam(':grupo', $grupo);
             $lastID = $stmt->execute();
-
-
         }
         ?>
     </header>
-    <main class="container">
+
+
+    <?php
+    if (isset($_GET['Añadido'])) {
+
+        if ($_GET['Añadido'] == 1) {
+            echo '<h3 class="text-light rounded bg-success p-2 px-3 m-3">Alumnos insertados exitosamente</h3>';
+        } elseif ($_GET['Añadido'] == 0) {
+            echo '<h3 class="text-light rounded bg-danger p-2 px-3 m-3">No se ha podido insertados los Alumnos. Compruebe el archivo</h3>';
+        }
+    }
+
+    ?>
+
+    <main class="container mt-3">
+
         <div class="d-flex justify-content-between flex-wrap">
 
             <div id="formulario" class="mx-auto mt-3 order-sm-2 order-md-1" style="width:400px;">
@@ -67,21 +70,19 @@ if (isset($_GET['Añadido'])) {
                 <!-- PHP_SELF para enviar al mismo archivo -->
                 <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
-          
+
                     <div class="form-group form-floating mb-3">
-                        <input type="text" name="matricula" class="form-control" id="matricula" 
-                            required>
+                        <input type="text" name="matricula" class="form-control" id="matricula" required>
                         <label for="matricula">Matrícula</label>
 
                     </div>
                     <div class="form-group form-floating mb-3">
-                        <input type="text" name="nombre" class="form-control" id="nombre"  required>
+                        <input type="text" name="nombre" class="form-control" id="nombre" required>
                         <label for="nombre">Nombre</label>
 
                     </div>
                     <div class="form-group form-floating mb-3">
-                        <input type="text" name="apellidos" class="form-control" id="apellidos" 
-                            required>
+                        <input type="text" name="apellidos" class="form-control" id="apellidos" required>
                         <label for="apellidos">Apellidos</label>
 
                     </div>
@@ -200,13 +201,9 @@ if (isset($_GET['Añadido'])) {
         ?>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 <script type="text/javascript">
     function editarAlumno(matricula) {
@@ -220,7 +217,6 @@ if (isset($_GET['Añadido'])) {
             window.location.href = url;
         }
     }
-
 </script>
 
 </html>
