@@ -32,15 +32,15 @@
             // Verificar si se ha recibido el parámetro 'eliminado' en la URL
             if (isset($_GET['eliminado'])) {
                 // Mostrar el mensaje según el valor del parámetro
-                if ($_GET['eliminado'] = 1) {
+                if ($_GET['eliminado'] == 1) {
                     echo '<h3 class="text-light rounded bg-success p-2 px-3">Parte eliminado exitosamente</h3>';
-                } elseif ($_GET['eliminado'] = 0) {
+                } elseif ($_GET['eliminado'] == 0) {
                     echo '<h3 class="text-light rounded bg-danger p-2 px-3">No se ha podido eliminar el parte. Intentelo más tarde</h3>';
                 }
             }
             ?>
             <h2 class="text-light rounded bg-dark p-2 px-3">Tabla de Partes</h2>
-            <div class="row">
+            <div class="row my-3">
                 <div class="col-lg-2 col-md-6 my-2">
                     <input type="date" id="filtroFecha" class="form-control" placeholder="Filtrar por fecha">
                 </div>
@@ -78,7 +78,7 @@
                     </select>
                 </div>
             </div>
-            <table id="tablaPartes" class="table table-striped table-rounded">
+            <table id="tablaPartes" class="table table-striped table-rounded" >
                 <thead>
                     <tr>
                         <th>Fecha</th>
