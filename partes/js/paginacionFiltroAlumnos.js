@@ -23,7 +23,7 @@ function mostrarPagina(pagina, filasPorPagina) {
   // Crea los elementos de la paginación
   var inicio;
   if(pagina <= 5){
-    inicio = pagina;
+    inicio = 1;
     fin = 10;
   }else{
     inicio = pagina - 5;
