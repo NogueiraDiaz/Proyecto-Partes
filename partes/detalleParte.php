@@ -61,6 +61,7 @@
                         echo "<p class='card-text'>Materia: " . $parte['materia'] . "</p>";
                         echo "<p class='card-text'>Detalle: " . $parte['descripcion'] . "</p>";
                         echo "<button class='btn btn-danger mt-4' onclick='eliminarParte(" . $parte['cod_parte'] . ")'>Eliminar Parte</button>";
+                        echo "<button class='btn btn-warning mt-4 ms-4' onclick='caducarParte(" . $parte['cod_parte'] . ")'>Caducar Parte</button>";
                         echo "</div>";
                         echo "</div>";
                     } else {
@@ -89,9 +90,15 @@
 
     <script>
         function eliminarParte(cod_parte) {
-            if (confirm("¿Estás seguro de que quieres eliminar esta parte?")) {
-                // Redirigir a la página de eliminación con el código de la parte
+            if (confirm("¿Estás seguro de que quieres eliminar este parte?")) {
+                // Redirigir a la página de eliminación con el código del parte
                 window.location.href = "./funcionalidad/eliminarParte.php?cod_parte=" + cod_parte;
+            }
+        }
+        function caducarParte(cod_parte) {
+            if (confirm("¿Estás seguro de que quieres caducar este parte?")) {
+                // Redirigir a la página de eliminación con el código del parte
+                window.location.href = "./funcionalidad/caducarParte.php?cod_parte=" + cod_parte;
             }
         }
     </script>
