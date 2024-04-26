@@ -35,9 +35,10 @@
                     $cod_parte = $_GET['cod_parte'];
                     
                     // Preparar la consulta para obtener los detalles de la parte
-                    $consulta = $db->prepare("SELECT p.cod_parte, CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, p.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, p.materia, p.descripcion
-                                            FROM partes p
-                                            JOIN usuarios u ON p.cod_usuario = u.cod_usuario
+                    $consulta = $db->prepare("SELECT p.cod_parte, CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, i.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, p.materia, p.descripcion
+                                            FROM Incidencias i
+                                            JOIN Partes p ON i.cod_incidencia = p.incidencia
+                                            JOIN Usuarios u ON p.cod_usuario = u.cod_usuario
                                             JOIN alumnos a ON p.matricula_Alumno = a.matricula
                                             WHERE p.cod_parte = :cod_parte
                     ");
