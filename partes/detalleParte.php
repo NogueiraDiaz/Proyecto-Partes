@@ -52,14 +52,14 @@
                         // Mostrar los detalles de la parte en una card de Bootstrap
                         echo "<div class='card card-rounded'>";
                         echo "<div class='card-body'>";
-                        echo "<h5 class='card-title'>Detalles de la Parte</h5>";
+                        echo "<h5 class='card-title mb-5 text-decoration-underline'>Detalles del Parte</h5>";
                         echo "<p class='card-text'>Fecha: " . $parte['fecha'] . "</p>";
                         echo "<p class='card-text'>Nombre del Profesor: " . $parte['nombreProfesorCompleto'] . "</p>";
                         echo "<p class='card-text'>Nombre del Alumno: " . $parte['nombreAlumnoCompleto'] . "</p>";
                         echo "<p class='card-text'>Puntos: " . $parte['puntos'] . "</p>";
                         echo "<p class='card-text'>Materia: " . $parte['materia'] . "</p>";
                         echo "<p class='card-text'>Detalle: " . $parte['descripcion'] . "</p>";
-                        echo "<button class='btn btn-danger' onclick='eliminarParte(" . $parte['cod_parte'] . ")'>Eliminar Parte</button>";
+                        echo "<button class='btn btn-danger mt-4' onclick='eliminarParte(" . $parte['cod_parte'] . ")'>Eliminar Parte</button>";
                         echo "</div>";
                         echo "</div>";
                     } else {

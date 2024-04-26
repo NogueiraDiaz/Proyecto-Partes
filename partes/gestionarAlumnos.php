@@ -142,7 +142,7 @@
 
                 </div>
 
-                <table class="table  table-bordered table-striped table-hover text-center mt-2" id="lista">
+                <table class="table table-bordered table-striped table-hover text-center mt-2" id="lista">
                     <thead>
                         <tr>
                             <th scope="col">Matrícula</th>
