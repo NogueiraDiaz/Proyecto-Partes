@@ -8,7 +8,7 @@ if(isset($_GET['cod_parte'])) {
     $cod_parte = $_GET['cod_parte'];
     
     // Preparar y ejecutar la consulta para actualizar el campo caducado
-    $consulta = $db->prepare("UPDATE Partes SET caducado = '3' WHERE cod_parte = :cod_parte");
+    $consulta = $db->prepare("UPDATE Partes SET caducado = '1' WHERE cod_parte = :cod_parte");
     $consulta->bindParam(":cod_parte", $cod_parte, PDO::PARAM_INT);
     $consulta->execute();
 

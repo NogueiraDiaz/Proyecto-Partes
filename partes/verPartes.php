@@ -81,12 +81,12 @@
             <table id="tablaPartes" class="table table-striped table-rounded" >
                 <thead>
                     <tr>
-                        <th>Fecha</th>
-                        <th>Nombre Profesor</th>
-                        <th>Nombre Alumno</th>
-                        <th>Grupo</th>
-                        <th>Puntos</th>
-                        <th></th>
+                        <th style="width: 125px" class="text-center">Fecha</th>
+                        <th style="width: 200px">Nombre Profesor</th>
+                        <th style="width: 200px">Nombre Alumno</th>
+                        <th style="width: 100px" class="text-center">Grupo</th>
+                        <th style="width: 100px" class="text-center">Puntos</th>
+                        <th style="width: 100px" class="ps-2"> Accion</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -104,7 +104,7 @@
                             $query = "WHERE u.cod_usuario = $id_usuario";
                         }
 
-                        $consulta = $db->prepare("SELECT p.cod_parte, CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, i.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, p.materia, p.descripcion, a.grupo
+                        $consulta = $db->prepare("SELECT p.cod_parte, CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, i.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, p.materia, p.descripcion, p.caducado, a.grupo
                         FROM Incidencias i
                         JOIN Partes p ON i.cod_incidencia = p.incidencia
                         JOIN Usuarios u ON p.cod_usuario = u.cod_usuario
@@ -118,16 +118,21 @@
 
 
                         // Iterar sobre los resultados y mostrar cada parte en una fila de la tabla
-                        while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
-                            echo "<tr class='fila-tabla'>";
-                            echo "<td>" . $row['fecha'] . "</td>";
-                            echo "<td>" . $row['nombreProfesorCompleto'] . "</td>";
-                            echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
-                            echo "<td>" . $row['grupo'] . "</td>";
-                            echo "<td>" . $row['puntos'] . "</td>";
-                            echo "<td><a class='text-black text-decoration-none' href='detalleParte.php?cod_parte=" . $row['cod_parte'] . "'>></a></td>"; // Flecha simple hacia la derecha
-                            echo "</tr>";
-                        }
+
+while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
+    echo "<tr class='fila-tabla'>";
+    echo "<td class='text-center'>" . $row['fecha'] . "</td>";
+    echo "<td>" . $row['nombreProfesorCompleto'] . "</td>";
+    echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
+    echo "<td class='text-center'>" . $row['grupo'] . "</td>";
+    echo "<td class='text-center'>" . $row['puntos'] . "</td>";
+    echo "<td><p><a class='text-decoration-none  text-black' href='detalleParte.php?cod_parte=" . $row['cod_parte'] . "'>Ver Parte -></a></p></td>";
+    
+    echo "</tr>";
+}
+
+
+                        
                     } catch (PDOException $e) {
                         echo "Error: " . $e->getMessage();
                     }

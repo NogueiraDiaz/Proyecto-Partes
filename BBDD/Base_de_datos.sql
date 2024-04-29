@@ -439,7 +439,6 @@ CREATE TABLE Partes (
   descripcion text,
   fecha_Comunicacion date NOT NULL,
   via_Comunicacion varchar(25) NOT NULL,
-  tipo_Parte varchar(20) NOT NULL,
   caducado tinyint(1) NOT NULL,
   PRIMARY KEY (cod_parte),
   FOREIGN KEY (cod_usuario) REFERENCES Usuarios(cod_usuario),
@@ -1487,16 +1486,16 @@ INSERT INTO Usuarios (cod_usuario, dni, nombre, apellidos, email, clave, rol, co
 
 
 INSERT INTO Partes (cod_usuario, matricula_Alumno, incidencia, materia, fecha, hora, descripcion, fecha_Comunicacion, via_Comunicacion, tipo_Parte, caducado) VALUES
-(2, '2021/1120', 1,1, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 2),
-(2, '2021/1120', 2,1, '2024-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 2),
-(2, '2021/1120', 2,2, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 2),
-(2, '2021/1120', 4,2, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 2),
-(2, '2021/1120', 4,2, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 2),
-(2, '2021/1120', 4,3, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 2),
-(2, '2021/1120', 1,4, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 2),
-(2, '2021/1120', 6,5, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 2),
-(2, '2021/1120', 7,6, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 2),
-(2, '2021/1120', 7,6, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 2);
+(2, '2021/1120', 1,1, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0),
+(2, '2021/1120', 2,1, '2024-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0),
+(2, '2021/1120', 2,2, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0),
+(2, '2021/1120', 4,2, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 1),
+(2, '2021/1120', 4,2, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 1),
+(2, '2021/1120', 4,3, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 1),
+(2, '2021/1120', 1,4, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0),
+(2, '2021/1120', 6,5, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0),
+(2, '2021/1120', 7,6, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0),
+(2, '2021/1120', 7,6, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0);
 
 /*
 (2, '2022/3414', 'Actos que menoscaben la autoridad del profesorado y perturban el desarrollo de las clases.', 10, 'tecnología', '2023-10-09', '14:04:43', 'El alumno tenia un movil encendido en las manos durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 5),

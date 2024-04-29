@@ -25,58 +25,59 @@
     </header>
     <main class="p-4 col-11 m-auto">
         <div class=" m-2">
-            <?php
-                // Incluir el archivo de conexión a la base de datos
-                require_once "../archivosComunes/conexion.php";
+        <?php
+    // Incluir el archivo de conexión a la base de datos
+    require_once "../archivosComunes/conexion.php";
 
-                // Verificar si se proporcionó el parámetro cod_parte en la URL
-                if(isset($_GET['cod_parte'])) {
-                    // Obtener el valor del parámetro cod_parte
-                    $cod_parte = $_GET['cod_parte'];
-                    
-                    // Preparar la consulta para obtener los detalles de la parte
-                    $consulta = $db->prepare("SELECT p.cod_parte, CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, i.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, p.materia, p.descripcion
-                                            FROM Incidencias i
-                                            JOIN Partes p ON i.cod_incidencia = p.incidencia
-                                            JOIN Usuarios u ON p.cod_usuario = u.cod_usuario
-                                            JOIN alumnos a ON p.matricula_Alumno = a.matricula
-                                            WHERE p.cod_parte = :cod_parte
-                    ");
-                    $consulta->bindParam(":cod_parte", $cod_parte, PDO::PARAM_INT);
-                    $consulta->execute();
-                    
-                    // Obtener los detalles de la parte
-                    $parte = $consulta->fetch(PDO::FETCH_ASSOC);
-                    
-                    // Verificar si se encontró la parte
-                    if($parte) {
-                        // Mostrar los detalles de la parte en una card de Bootstrap
-                        echo "<div class='card card-rounded'>";
-                        echo "<div class='card-body'>";
-                        echo "<h5 class='card-title mb-5 text-decoration-underline'>Detalles del Parte</h5>";
-                        echo "<p class='card-text'>Fecha: " . $parte['fecha'] . "</p>";
-                        echo "<p class='card-text'>Nombre del Profesor: " . $parte['nombreProfesorCompleto'] . "</p>";
-                        echo "<p class='card-text'>Nombre del Alumno: " . $parte['nombreAlumnoCompleto'] . "</p>";
-                        echo "<p class='card-text'>Puntos: " . $parte['puntos'] . "</p>";
-                        echo "<p class='card-text'>Materia: " . $parte['materia'] . "</p>";
-                        echo "<p class='card-text'>Detalle: " . $parte['descripcion'] . "</p>";
-                        echo "<button class='btn btn-danger mt-4' onclick='eliminarParte(" . $parte['cod_parte'] . ")'>Eliminar Parte</button>";
-                        echo "<button class='btn btn-warning mt-4 ms-4' onclick='caducarParte(" . $parte['cod_parte'] . ")'>Caducar Parte</button>";
-                        echo "</div>";
-                        echo "</div>";
-                    } else {
-                        // Mostrar un mensaje si la parte no fue encontrada
-                        echo '<h3 class="text-black rounded bg-light p-2 px-3">No se encontro el parte</h3>';
+    // Verificar si se proporcionó el parámetro cod_parte en la URL
+    if(isset($_GET['cod_parte'])) {
+        // Obtener el valor del parámetro cod_parte
+        $cod_parte = $_GET['cod_parte'];
+        
+        // Preparar la consulta para obtener los detalles de la parte
+        $consulta = $db->prepare("SELECT p.cod_parte, CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, i.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, p.materia, p.descripcion, p.caducado
+                                FROM Incidencias i
+                                JOIN Partes p ON i.cod_incidencia = p.incidencia
+                                JOIN Usuarios u ON p.cod_usuario = u.cod_usuario
+                                JOIN alumnos a ON p.matricula_Alumno = a.matricula
+                                WHERE p.cod_parte = :cod_parte
+        ");
+        $consulta->bindParam(":cod_parte", $cod_parte, PDO::PARAM_INT);
+        $consulta->execute();
+        
+        // Obtener los detalles de la parte
+        $parte = $consulta->fetch(PDO::FETCH_ASSOC);
+        
+        // Verificar si se encontró la parte
+        if($parte) {
+            // Mostrar los detalles de la parte en una card de Bootstrap
+            echo "<div class='card card-rounded'>";
+            echo "<div class='card-body'>";
+            echo "<h5 class='card-title mb-5 text-decoration-underline'>Detalles del Parte</h5>";
+            echo "<p class='card-text'>Fecha: " . $parte['fecha'] . "</p>";
+            echo "<p class='card-text'>Nombre del Profesor: " . $parte['nombreProfesorCompleto'] . "</p>";
+            echo "<p class='card-text'>Nombre del Alumno: " . $parte['nombreAlumnoCompleto'] . "</p>";
+            echo "<p class='card-text'>Puntos: " . $parte['puntos'] . "</p>";
+            echo "<p class='card-text'>Materia: " . $parte['materia'] . "</p>";
+            echo "<p class='card-text'>Detalle: " . $parte['descripcion'] . "</p>";
+            echo "<p class='card-text ".($parte['caducado'] == 1 ? 'text-danger' : '')."'>".($parte['caducado'] == 1 ? 'Caducado' : '')."</p>";
+            echo "<button class='btn btn-danger mt-4' onclick='eliminarParte(" . $parte['cod_parte'] . ")'>Eliminar Parte</button>";
+            echo "<button class='btn btn-warning mt-4 ms-4' onclick='caducarParte(" . $parte['cod_parte'] . ")' ".($parte['caducado'] == 1 ? 'disabled' : '').">Caducar Parte</button>";
+            echo "</div>";
+            echo "</div>";
+        } else {
+            // Mostrar un mensaje si la parte no fue encontrada
+            echo '<h3 class="text-black rounded bg-light p-2 px-3">No se encontró el parte</h3>';
+        }
+    } else {
+        // Mostrar un mensaje si no se proporcionó el parámetro cod_parte
+        echo "<p>No se proporcionó el parámetro cod_parte en la URL.</p>";
+    }
 
-                    }
-                } else {
-                    // Mostrar un mensaje si no se proporcionó el parámetro cod_parte
-                    echo "<p>No se proporcionó el parámetro cod_parte en la URL.</p>";
-                }
+    // Cerrar la conexión a la base de datos
+    $db = null;
+?>
 
-                // Cerrar la conexión a la base de datos
-                $db = null;
-            ?>
         </div>
     </main>
     <footer>
