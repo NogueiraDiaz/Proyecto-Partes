@@ -41,14 +41,14 @@
             ?>
             <h2 class="text-light rounded bg-dark p-2 px-3">Tabla de Partes</h2>
             <div class="row my-3">
-                <div class="col-lg-2 col-md-6 my-2">
+                <div class="col-lg-4 col-md-6 my-2">
                     <input type="date" id="filtroFecha" class="form-control" placeholder="Filtrar por fecha">
                 </div>
-                <div class="col-lg-3 col-md-6 my-2">
+                <div class="col-lg-4 col-md-6 my-2">
                     <input type="text" id="filtroNombreProfesor" class="form-control"
                         placeholder="Filtrar por nombre del profesor">
                 </div>
-                <div class="col-lg-3 col-md-6 my-2">
+                <div class="col-lg-4 col-md-6 my-2">
                     <input type="text" id="filtroNombreAlumno" class="form-control"
                         placeholder="Filtrar por nombre del alumno">
                 </div>
@@ -56,7 +56,7 @@
                         // Incluir el archivo de conexión a la base de datos
                         require_once "../archivosComunes/conexion.php";
                         ?>
-                <div class="col-lg-2 col-md-6 my-2">
+                <div class="col-lg-3 col-md-6 my-2">
                     <select id="filtroGrupo" class="form-select">
                         <option value="">Filtrar grupo</option>
                         <?php
@@ -69,7 +69,7 @@
                     </select>
                 </div>
 
-                <div class="col-lg-2 col-md-6 my-2">
+                <div class="col-lg-3 col-md-6 my-2">
                     <select id="filtroPuntos" class="form-select">
                         <option value="">Filtrar por puntos</option>
                         <option value="3">3 puntos</option>
@@ -77,6 +77,15 @@
                         <option value="10">10 puntos</option>
                     </select>
                 </div>
+
+                <div class="col-lg-3 col-md-6 my-2">
+    <select id="filtroCaducado" class="form-select">
+        <option value="">Filtrar por estado</option>
+        <option value="Caducado">Caducado</option>
+        <option value="Vigente">Vigente</option>
+    </select>
+</div>
+
             </div>
             <table id="tablaPartes" class="table table-striped table-rounded" >
                 <thead>
@@ -86,6 +95,7 @@
                         <th style="width: 200px">Nombre Alumno</th>
                         <th style="width: 100px" class="text-center">Grupo</th>
                         <th style="width: 100px" class="text-center">Puntos</th>
+                        <th style="width: 100px" class="text-center">Estado</th>
                         <th style="width: 100px" class="ps-2"> Accion</th>
                     </tr>
                 </thead>
@@ -126,6 +136,10 @@ while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
     echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
     echo "<td class='text-center'>" . $row['grupo'] . "</td>";
     echo "<td class='text-center'>" . $row['puntos'] . "</td>";
+
+    $estado = $row['caducado'] == 1 ? "Caducado" : "Vigente";
+    echo "<td class='text-center'>" . $estado . "</td>";
+
     echo "<td><p><a class='text-decoration-none  text-black' href='detalleParte.php?cod_parte=" . $row['cod_parte'] . "'>Ver Parte -></a></p></td>";
     
     echo "</tr>";
@@ -162,47 +176,55 @@ while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const filtroFecha = document.getElementById("filtroFecha");
-            const filtroNombreProfesor = document.getElementById("filtroNombreProfesor");
-            const filtroNombreAlumno = document.getElementById("filtroNombreAlumno");
-            const filtroGrupo = document.getElementById("filtroGrupo");
-            const filtroPuntos = document.getElementById("filtroPuntos");
-            const tablaPartes = document.getElementById("tablaPartes").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+document.addEventListener("DOMContentLoaded", function () {
+    const filtroFecha = document.getElementById("filtroFecha");
+    const filtroNombreProfesor = document.getElementById("filtroNombreProfesor");
+    const filtroNombreAlumno = document.getElementById("filtroNombreAlumno");
+    const filtroGrupo = document.getElementById("filtroGrupo");
+    const filtroPuntos = document.getElementById("filtroPuntos");
+    const filtroCaducado = document.getElementById("filtroCaducado");
+    const tablaPartes = document.getElementById("tablaPartes").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 
-            // Agregar event listeners para los campos de filtro
-            filtroFecha.addEventListener("input", filtrarTabla);
-            filtroNombreProfesor.addEventListener("input", filtrarTabla);
-            filtroNombreAlumno.addEventListener("input", filtrarTabla);
-            filtroGrupo.addEventListener("change", filtrarTabla);
-            filtroPuntos.addEventListener("change", filtrarTabla);
+    // Agregar event listeners para los campos de filtro
+    filtroFecha.addEventListener("input", filtrarTabla);
+    filtroNombreProfesor.addEventListener("input", filtrarTabla);
+    filtroNombreAlumno.addEventListener("input", filtrarTabla);
+    filtroGrupo.addEventListener("change", filtrarTabla);
+    filtroPuntos.addEventListener("change", filtrarTabla);
+    filtroCaducado.addEventListener("change", filtrarTabla);
 
-            function filtrarTabla() {
-                const textoFecha = filtroFecha.value.toLowerCase();
-                const textoNombreProfesor = filtroNombreProfesor.value.toLowerCase();
-                const textoNombreAlumno = filtroNombreAlumno.value.toLowerCase();
-                const valorGrupo = filtroGrupo.value;
-                const valorPuntos = filtroPuntos.value;
+    function filtrarTabla() {
+        const textoFecha = filtroFecha.value.toLowerCase();
+        const textoNombreProfesor = filtroNombreProfesor.value.toLowerCase();
+        const textoNombreAlumno = filtroNombreAlumno.value.toLowerCase();
+        const valorGrupo = filtroGrupo.value;
+        const valorPuntos = filtroPuntos.value;
+        const valorCaducado = filtroCaducado.value; // Obtener el valor del select
 
-                // Iterar sobre las filas de la tabla
-                for (let fila of tablaPartes) {
-                    const fecha = fila.cells[0].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
-                    const nombreProfesor = fila.cells[1].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
-                    const nombreAlumno = fila.cells[2].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
-                    const grupo = fila.cells[3].textContent;
-                    const puntos = fila.cells[4].textContent; // Ajusta el índice según las columnas de tu tabla
-                    // Verificar si la fila coincide con los filtros
-                    const cumpleFiltroFecha = fecha.includes(textoFecha) || textoFecha === "";
-                    const cumpleFiltroNombreProfesor = nombreProfesor.includes(textoNombreProfesor) || textoNombreProfesor === "";
-                    const cumpleFiltroNombreAlumno = nombreAlumno.includes(textoNombreAlumno) || textoNombreAlumno === "";
-                    const cumpleFiltroGrupo = valorGrupo === "" || grupo === valorGrupo;
-                    const cumpleFiltroPuntos = valorPuntos === "" || puntos === valorPuntos;
-                    // Mostrar u ocultar la fila según los filtros
-                    fila.style.display = cumpleFiltroFecha && cumpleFiltroNombreProfesor && cumpleFiltroNombreAlumno && cumpleFiltroGrupo && cumpleFiltroPuntos ? "" : "none";
-                }
-            }
-        });
-    </script>
+        // Iterar sobre las filas de la tabla
+        for (let fila of tablaPartes) {
+            const fecha = fila.cells[0].textContent.toLowerCase();
+            const nombreProfesor = fila.cells[1].textContent.toLowerCase();
+            const nombreAlumno = fila.cells[2].textContent.toLowerCase();
+            const grupo = fila.cells[3].textContent;
+            const puntos = fila.cells[4].textContent;
+            const caducado = fila.cells[5].textContent; // Ajustar el índice según las columnas de tu tabla
+
+            // Verificar si la fila coincide con los filtros
+            const cumpleFiltroFecha = fecha.includes(textoFecha) || textoFecha === "";
+            const cumpleFiltroNombreProfesor = nombreProfesor.includes(textoNombreProfesor) || textoNombreProfesor === "";
+            const cumpleFiltroNombreAlumno = nombreAlumno.includes(textoNombreAlumno) || textoNombreAlumno === "";
+            const cumpleFiltroGrupo = valorGrupo === "" || grupo === valorGrupo;
+            const cumpleFiltroPuntos = valorPuntos === "" || puntos === valorPuntos;
+            const cumpleFiltroCaducado = valorCaducado === "" || caducado === valorCaducado; // Comparar con el valor seleccionado del select
+
+            // Mostrar u ocultar la fila según los filtros
+            fila.style.display = cumpleFiltroFecha && cumpleFiltroNombreProfesor && cumpleFiltroNombreAlumno && cumpleFiltroGrupo && cumpleFiltroPuntos && cumpleFiltroCaducado ? "" : "none";
+        }
+    }
+});
+</script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
