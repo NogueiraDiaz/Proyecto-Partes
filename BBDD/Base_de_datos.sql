@@ -1485,17 +1485,23 @@ INSERT INTO Usuarios (cod_usuario, dni, nombre, apellidos, email, clave, rol, co
 (170, '03875260J', 'Carolina', 'Sanchez Rosell', 'guasasa77@hotmail.com', '$2y$10$HX88Y88.//VBV5iaSn5z7eSyF4l2XOFIK8VvMnbfqaLtjxaXAxSt2', '1', 45256, 'si', 'No.', 2);
 
 
-INSERT INTO Partes (cod_usuario, matricula_Alumno, incidencia, materia, fecha, hora, descripcion, fecha_Comunicacion, via_Comunicacion, tipo_Parte, caducado) VALUES
-(2, '2021/1120', 1,1, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0),
-(2, '2021/1120', 2,1, '2024-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0),
-(2, '2021/1120', 2,2, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0),
-(2, '2021/1120', 4,2, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 1),
-(2, '2021/1120', 4,2, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 1),
-(2, '2021/1120', 4,3, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 1),
-(2, '2021/1120', 1,4, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0),
-(2, '2021/1120', 6,5, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0),
-(2, '2021/1120', 7,6, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0),
-(2, '2021/1120', 7,6, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 0);
+INSERT INTO Partes (cod_usuario, matricula_Alumno, incidencia, materia, fecha, hora, descripcion, fecha_Comunicacion, via_Comunicacion, caducado) VALUES
+(2, '2021/1120', 1,1, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 0),
+(2, '2021/1120', 2,1, '2024-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 0),
+(2, '2021/1120', 2,2, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 0),
+(2, '2021/1120', 4,2, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 1),
+(2, '2021/1120', 4,2, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 1),
+(2, '2021/1120', 4,3, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 1),
+(2, '2021/1120', 1,4, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 0),
+(2, '2021/1120', 6,5, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 0),
+(2, '2021/1120', 7,6, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 0),
+(2, '2021/1120', 7,6, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 0);
+(34, '2022/2651',1,1, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 0),
+(34, '2023/1050',1,1, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 0),
+(117, '2021/3178',1,1, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 0),
+(117, '2021/3178',1,1, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 0),
+(100, '2023/1385',1,1, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 0),
+(100, '2023/1385',1,1, '2023-10-09', '14:18:50', 'Tener un movil encendido en la mesa durante la clase.    ', '2023-10-10', 'Mensaje', 0),
 
 /*
 (2, '2022/3414', 'Actos que menoscaben la autoridad del profesorado y perturban el desarrollo de las clases.', 10, 'tecnología', '2023-10-09', '14:04:43', 'El alumno tenia un movil encendido en las manos durante la clase.    ', '2023-10-10', 'Mensaje', 'Puntos', 5),
