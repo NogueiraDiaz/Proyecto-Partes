@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Partes de la Base de Datos</title>
+    <title>Expulsiones Pendientes</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
