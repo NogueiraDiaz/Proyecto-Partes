@@ -28,7 +28,7 @@
     </header>
     <main class="p-4">
         <div class=" m-2">
-            <h2 class="text-light rounded bg-dark p-2 px-3">Partes de la Base de Datos</h2>
+            <h2 class="text-light rounded bg-dark p-2 px-3">Expulsiones Pendientes</h2>
             <div class="row">
                 <div class="col-lg-2 col-md-6 my-2">
                     <input type="date" id="filtroFecha" class="form-control" placeholder="Filtrar por fecha">
