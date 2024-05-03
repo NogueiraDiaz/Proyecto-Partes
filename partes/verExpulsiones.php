@@ -94,13 +94,20 @@
                             $query = "WHERE u.cod_usuario = $id_usuario";
                         }
 
-                        $consulta = $db->prepare("SELECT CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, p.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo
-                                FROM partes p
-                                JOIN usuarios u ON p.cod_usuario = u.cod_usuario
-                                JOIN alumnos a ON p.matricula_Alumno = a.matricula
-                                $query
-                                ORDER BY p.fecha DESC
-                            ");
+                            $consulta = $db->prepare("SELECT a.matricula, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo, 
+                            CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, 
+                            p.fecha, p.materia, p.descripcion, p.caducado,
+                            SUM(i.puntos) AS totalPuntos
+                            FROM Incidencias i
+                            JOIN Partes p ON i.cod_incidencia = p.incidencia
+                            JOIN Usuarios u ON p.cod_usuario = u.cod_usuario
+                            JOIN Alumnos a ON p.matricula_Alumno = a.matricula
+                            $query
+                            WHERE p.caducado = 0
+                            GROUP BY a.matricula
+                            HAVING totalPuntos >= 10
+                        ORDER BY p.fecha DESC
+                        ");
 
                         $consulta->execute();
 
@@ -111,7 +118,7 @@
                             echo "<td>" . $row['nombreProfesorCompleto'] . "</td>";
                             echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
                             echo "<td>" . $row['grupo'] . "</td>";
-                            echo "<td>" . $row['puntos'] . "</td>";
+                            echo "<td>" . $row['totalPuntos'] . "</td>";
                             // Agrega más columnas según las columnas de tu base de datos
                             echo "</tr>";
                         }
