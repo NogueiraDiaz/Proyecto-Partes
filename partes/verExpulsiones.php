@@ -30,13 +30,6 @@
         <div class=" m-2">
             <h2 class="text-light rounded bg-dark p-2 px-3">Expulsiones Pendientes</h2>
             <div class="row">
-                <div class="col-lg-2 col-md-6 my-2">
-                    <input type="date" id="filtroFecha" class="form-control" placeholder="Filtrar por fecha">
-                </div>
-                <div class="col-lg-3 col-md-6 my-2">
-                    <input type="text" id="filtroNombreProfesor" class="form-control"
-                        placeholder="Filtrar por nombre del profesor">
-                </div>
                 <div class="col-lg-3 col-md-6 my-2">
                     <input type="text" id="filtroNombreAlumno" class="form-control"
                         placeholder="Filtrar por nombre del alumno">
@@ -58,23 +51,19 @@
                     </select>
                 </div>
 
-                <div class="col-lg-2 col-md-6 my-2">
-                    <select id="filtroPuntos" class="form-select">
-                        <option value="">Filtrar por puntos</option>
-                        <option value="3">3 puntos</option>
-                        <option value="5">5 puntos</option>
-                        <option value="10">10 puntos</option>
-                    </select>
+                <
+                <div class="col-lg-3 col-md-6 my-2">
+                    <input type="number" id="filtroPuntos" class="form-control"
+                        placeholder="Filtrar por puntos">
                 </div>
             </div>
             <table id="tablaPartes" class="table table-striped table-rounded">
                 <thead>
                     <tr>
-                        <th>Fecha</th>
-                        <th>Nombre Profesor</th>
                         <th>Nombre Alumno</th>
                         <th>Grupo</th>
                         <th>Puntos</th>
+                        <th>Administrar</th>
                         <!-- Agrega más encabezados según las columnas de tu tabla -->
                     </tr>
                 </thead>
@@ -106,7 +95,6 @@
                             WHERE p.caducado = 0
                             GROUP BY a.matricula
                             HAVING totalPuntos >= 10
-                        ORDER BY p.fecha DESC
                         ");
 
                         $consulta->execute();
@@ -114,11 +102,11 @@
                         // Iterar sobre los resultados y mostrar cada parte en una fila de la tabla
                         while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
                             echo "<tr>";
-                            echo "<td>" . $row['fecha'] . "</td>";
-                            echo "<td>" . $row['nombreProfesorCompleto'] . "</td>";
                             echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
                             echo "<td>" . $row['grupo'] . "</td>";
                             echo "<td>" . $row['totalPuntos'] . "</td>";
+                            echo "<td><p><a class='text-decoration-none  text-black' href='Confirmar_Expulsion.php?matricula=" . $row['matricula'] . "'>Confirmar expulsión -></a></p></td>";
+
                             // Agrega más columnas según las columnas de tu base de datos
                             echo "</tr>";
                         }
@@ -152,41 +140,31 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const filtroFecha = document.getElementById("filtroFecha");
-            const filtroNombreProfesor = document.getElementById("filtroNombreProfesor");
             const filtroNombreAlumno = document.getElementById("filtroNombreAlumno");
             const filtroGrupo = document.getElementById("filtroGrupo");
             const filtroPuntos = document.getElementById("filtroPuntos");
             const tablaPartes = document.getElementById("tablaPartes").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 
             // Agregar event listeners para los campos de filtro
-            filtroFecha.addEventListener("input", filtrarTabla);
-            filtroNombreProfesor.addEventListener("input", filtrarTabla);
             filtroNombreAlumno.addEventListener("input", filtrarTabla);
             filtroGrupo.addEventListener("change", filtrarTabla);
             filtroPuntos.addEventListener("change", filtrarTabla);
 
             function filtrarTabla() {
-                const textoFecha = filtroFecha.value.toLowerCase();
-                const textoNombreProfesor = filtroNombreProfesor.value.toLowerCase();
                 const textoNombreAlumno = filtroNombreAlumno.value.toLowerCase();
                 const valorGrupo = filtroGrupo.value;
                 const valorPuntos = filtroPuntos.value;
                 // Iterar sobre las filas de la tabla
                 for (let fila of tablaPartes) {
-                    const fecha = fila.cells[0].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
-                    const nombreProfesor = fila.cells[1].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
                     const nombreAlumno = fila.cells[2].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
                     const grupo = fila.cells[3].textContent;
                     const puntos = fila.cells[4].textContent; // Ajusta el índice según las columnas de tu tabla
                     // Verificar si la fila coincide con los filtros
-                    const cumpleFiltroFecha = fecha.includes(textoFecha) || textoFecha === "";
-                    const cumpleFiltroNombreProfesor = nombreProfesor.includes(textoNombreProfesor) || textoNombreProfesor === "";
                     const cumpleFiltroNombreAlumno = nombreAlumno.includes(textoNombreAlumno) || textoNombreAlumno === "";
                     const cumpleFiltroGrupo = valorGrupo === "" || grupo === valorGrupo;
                     const cumpleFiltroPuntos = valorPuntos === "" || puntos === valorPuntos;
                     // Mostrar u ocultar la fila según los filtros
-                    fila.style.display = cumpleFiltroFecha && cumpleFiltroNombreProfesor && cumpleFiltroNombreAlumno && cumpleFiltroGrupo && cumpleFiltroPuntos ? "" : "none";
+                    fila.style.display = cumpleFiltroNombreAlumno && cumpleFiltroGrupo && cumpleFiltroPuntos ? "" : "none";
                 }
             }
         });
