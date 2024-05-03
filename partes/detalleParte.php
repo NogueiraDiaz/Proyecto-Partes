@@ -62,7 +62,7 @@
             echo "<p class='card-text'>Detalle: " . $parte['descripcion'] . "</p>";
             echo "<p class='card-text ".($parte['caducado'] == 1 ? 'text-danger' : '')."'>".($parte['caducado'] == 1 ? 'Caducado' : '')."</p>";
             echo "<button class='btn btn-danger mt-4' onclick='eliminarParte(" . $parte['cod_parte'] . ")'>Eliminar Parte</button>";
-            echo "<button class='btn btn-warning mt-4 ms-4' onclick='caducarParte(" . $parte['cod_parte'] . ")' ".($parte['caducado'] == 1 ? 'disabled' : '').">Caducar Parte</button>";
+            echo '<button class="btn ' . ($parte['caducado'] == 1 ? 'btn-danger' : 'btn-warning') . ' mt-4 ms-4" onclick="caducarParte(' . $parte['cod_parte'] . ')" ' . ($parte['caducado'] == 1 ? 'disabled' : '') . '>Caducar Parte</button>';
             echo "</div>";
             echo "</div>";
         } else {

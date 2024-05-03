@@ -41,7 +41,7 @@
             ?>
             <h2 class="text-light rounded bg-dark p-2 px-3">Tabla de Partes</h2>
             <div class="row my-3">
-                <div class="col-lg-4 col-md-6 my-2">
+                <div class="col-lg-2 col-md-6 my-2">
                     <input type="date" id="filtroFecha" class="form-control" placeholder="Filtrar por fecha">
                 </div>
                 <div class="col-lg-4 col-md-6 my-2">
@@ -56,7 +56,7 @@
                         // Incluir el archivo de conexión a la base de datos
                         require_once "../archivosComunes/conexion.php";
                         ?>
-                <div class="col-lg-3 col-md-6 my-2">
+                <div class="col-lg-2 col-md-6 my-2">
                     <select id="filtroGrupo" class="form-select">
                         <option value="">Filtrar grupo</option>
                         <?php
@@ -69,7 +69,7 @@
                     </select>
                 </div>
 
-                <div class="col-lg-3 col-md-6 my-2">
+                <div class="col-lg-2 col-md-6 my-2">
                     <select id="filtroPuntos" class="form-select">
                         <option value="">Filtrar por puntos</option>
                         <option value="3">3 puntos</option>
