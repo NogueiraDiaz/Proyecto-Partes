@@ -8,11 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="stylesheet" href="../css/principal.css">
     <!-- Bootstrap CSS v5.2.1 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
-        <script src="js/paginacionFiltroPartes.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <script src="js/paginacionFiltroPartes.js"></script>
 
-   <style>
+    <style>
         .table-rounded {
             border-radius: 10px;
             overflow: hidden;
@@ -31,13 +30,12 @@
             <h2 class="text-light rounded bg-dark p-2 px-3">Expulsiones Pendientes</h2>
             <div class="row">
                 <div class="col-lg-3 col-md-6 my-2">
-                    <input type="text" id="filtroNombreAlumno" class="form-control"
-                        placeholder="Filtrar por nombre del alumno">
+                    <input type="text" id="filtroNombreAlumno" class="form-control" placeholder="Filtrar por nombre del alumno">
                 </div>
                 <?php
-                        // Incluir el archivo de conexión a la base de datos
-                        require_once "../archivosComunes/conexion.php";
-                        ?>
+                // Incluir el archivo de conexión a la base de datos
+                require_once "../archivosComunes/conexion.php";
+                ?>
                 <div class="col-lg-2 col-md-6 my-2">
                     <select id="filtroGrupo" class="form-select">
                         <option value="">Filtrar grupo</option>
@@ -45,16 +43,10 @@
                         $consulta = $db->prepare("SELECT * FROM Cursos");
                         $consulta->execute();
                         while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
-                            echo "<option value=".$row['grupo'].">" .$row['grupo']. "</option>";
+                            echo "<option value=" . $row['grupo'] . ">" . $row['grupo'] . "</option>";
                         }
                         ?>
                     </select>
-                </div>
-
-                <
-                <div class="col-lg-3 col-md-6 my-2">
-                    <input type="number" id="filtroPuntos" class="form-control"
-                        placeholder="Filtrar por puntos">
                 </div>
             </div>
             <table id="tablaPartes" class="table table-striped table-rounded">
@@ -62,7 +54,6 @@
                     <tr>
                         <th>Nombre Alumno</th>
                         <th>Grupo</th>
-                        <th>Puntos</th>
                         <th>Administrar</th>
                         <!-- Agrega más encabezados según las columnas de tu tabla -->
                     </tr>
@@ -83,13 +74,10 @@
                             $query = "WHERE u.cod_usuario = $id_usuario";
                         }
 
-                            $consulta = $db->prepare("SELECT a.matricula, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo, 
-                            CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, 
-                            p.fecha, p.materia, p.descripcion, p.caducado,
+                        $consulta = $db->prepare("SELECT a.matricula, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo, 
                             SUM(i.puntos) AS totalPuntos
                             FROM Incidencias i
                             JOIN Partes p ON i.cod_incidencia = p.incidencia
-                            JOIN Usuarios u ON p.cod_usuario = u.cod_usuario
                             JOIN Alumnos a ON p.matricula_Alumno = a.matricula
                             $query
                             WHERE p.caducado = 0
@@ -104,7 +92,6 @@
                             echo "<tr>";
                             echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
                             echo "<td>" . $row['grupo'] . "</td>";
-                            echo "<td>" . $row['totalPuntos'] . "</td>";
                             echo "<td><p><a class='text-decoration-none  text-black' href='Confirmar_Expulsion.php?matricula=" . $row['matricula'] . "'>Confirmar expulsión -></a></p></td>";
 
                             // Agrega más columnas según las columnas de tu base de datos
@@ -139,41 +126,34 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const filtroNombreAlumno = document.getElementById("filtroNombreAlumno");
             const filtroGrupo = document.getElementById("filtroGrupo");
-            const filtroPuntos = document.getElementById("filtroPuntos");
             const tablaPartes = document.getElementById("tablaPartes").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 
             // Agregar event listeners para los campos de filtro
             filtroNombreAlumno.addEventListener("input", filtrarTabla);
             filtroGrupo.addEventListener("change", filtrarTabla);
-            filtroPuntos.addEventListener("change", filtrarTabla);
 
             function filtrarTabla() {
                 const textoNombreAlumno = filtroNombreAlumno.value.toLowerCase();
                 const valorGrupo = filtroGrupo.value;
-                const valorPuntos = filtroPuntos.value;
                 // Iterar sobre las filas de la tabla
                 for (let fila of tablaPartes) {
-                    const nombreAlumno = fila.cells[2].textContent.toLowerCase(); // Ajusta el índice según las columnas de tu tabla
-                    const grupo = fila.cells[3].textContent;
-                    const puntos = fila.cells[4].textContent; // Ajusta el índice según las columnas de tu tabla
+                    const nombreAlumno = fila.cells[0].textContent.toLowerCase(); // Cambiado a 0, primera celda de la fila
+                    const grupo = fila.cells[1].textContent; // Cambiado a 1, segunda celda de la fila
                     // Verificar si la fila coincide con los filtros
                     const cumpleFiltroNombreAlumno = nombreAlumno.includes(textoNombreAlumno) || textoNombreAlumno === "";
                     const cumpleFiltroGrupo = valorGrupo === "" || grupo === valorGrupo;
-                    const cumpleFiltroPuntos = valorPuntos === "" || puntos === valorPuntos;
                     // Mostrar u ocultar la fila según los filtros
-                    fila.style.display = cumpleFiltroNombreAlumno && cumpleFiltroGrupo && cumpleFiltroPuntos ? "" : "none";
+                    fila.style.display = cumpleFiltroNombreAlumno && cumpleFiltroGrupo ? "" : "none";
                 }
             }
         });
     </script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 
 </html>
