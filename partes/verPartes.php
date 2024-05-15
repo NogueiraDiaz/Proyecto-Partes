@@ -41,8 +41,17 @@
             ?>
             <h2 class="text-light rounded bg-dark p-2 px-3">Tabla de Partes</h2>
             <div class="row my-3">
-                <div class="col-lg-2 col-md-6 my-2">
-                    <input type="date" id="filtroFecha" class="form-control" placeholder="Filtrar por fecha">
+                <div class="col-lg-3 col-md-6 my-2">
+                    <div class="input-group">
+                        <span class="input-group-text">Desde</span>
+                        <input type="date" id="filtroFechaInicio" class="form-control" placeholder="Fecha de inicio">
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 my-2">
+                    <div class="input-group">
+                        <span class="input-group-text">Hasta</span>
+                        <input type="date" id="filtroFechaFin" class="form-control" placeholder="Fecha de fin">
+                    </div>
                 </div>
                 <div class="col-lg-4 col-md-6 my-2">
                     <input type="text" id="filtroNombreProfesor" class="form-control"
@@ -79,15 +88,15 @@
                 </div>
 
                 <div class="col-lg-3 col-md-6 my-2">
-    <select id="filtroCaducado" class="form-select">
-        <option value="">Filtrar por estado</option>
-        <option value="Caducado">Caducado</option>
-        <option value="Vigente">Vigente</option>
-    </select>
-</div>
+                    <select id="filtroCaducado" class="form-select">
+                        <option value="">Filtrar por estado</option>
+                        <option value="Caducado">Caducado</option>
+                        <option value="Vigente">Vigente</option>
+                    </select>
+                </div>
 
             </div>
-            <table id="tablaPartes" class="table table-striped table-rounded" >
+            <table id="tablaPartes" class="table table-striped table-rounded">
                 <thead>
                     <tr>
                         <th style="width: 125px" class="text-center">Fecha</th>
@@ -177,7 +186,8 @@ while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
 
     <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const filtroFecha = document.getElementById("filtroFecha");
+    const filtroFechaInicio = document.getElementById("filtroFechaInicio");
+    const filtroFechaFin = document.getElementById("filtroFechaFin");
     const filtroNombreProfesor = document.getElementById("filtroNombreProfesor");
     const filtroNombreAlumno = document.getElementById("filtroNombreAlumno");
     const filtroGrupo = document.getElementById("filtroGrupo");
@@ -186,7 +196,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const tablaPartes = document.getElementById("tablaPartes").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 
     // Agregar event listeners para los campos de filtro
-    filtroFecha.addEventListener("input", filtrarTabla);
+    filtroFechaInicio.addEventListener("input", filtrarTabla);
+    filtroFechaFin.addEventListener("input", filtrarTabla);
     filtroNombreProfesor.addEventListener("input", filtrarTabla);
     filtroNombreAlumno.addEventListener("input", filtrarTabla);
     filtroGrupo.addEventListener("change", filtrarTabla);
@@ -194,32 +205,26 @@ document.addEventListener("DOMContentLoaded", function () {
     filtroCaducado.addEventListener("change", filtrarTabla);
 
     function filtrarTabla() {
-        const textoFecha = filtroFecha.value.toLowerCase();
+        const fechaInicio = filtroFechaInicio.valueAsDate;
+        const fechaFin = filtroFechaFin.valueAsDate;
         const textoNombreProfesor = filtroNombreProfesor.value.toLowerCase();
         const textoNombreAlumno = filtroNombreAlumno.value.toLowerCase();
         const valorGrupo = filtroGrupo.value;
         const valorPuntos = filtroPuntos.value;
-        const valorCaducado = filtroCaducado.value; // Obtener el valor del select
+        const valorCaducado = filtroCaducado.value; 
 
-        // Iterar sobre las filas de la tabla
         for (let fila of tablaPartes) {
-            const fecha = fila.cells[0].textContent.toLowerCase();
-            const nombreProfesor = fila.cells[1].textContent.toLowerCase();
-            const nombreAlumno = fila.cells[2].textContent.toLowerCase();
-            const grupo = fila.cells[3].textContent;
-            const puntos = fila.cells[4].textContent;
-            const caducado = fila.cells[5].textContent; // Ajustar el índice según las columnas de tu tabla
+            const fecha = new Date(fila.cells[0].textContent); // Convertir la fecha de texto a objeto Date
 
-            // Verificar si la fila coincide con los filtros
-            const cumpleFiltroFecha = fecha.includes(textoFecha) || textoFecha === "";
-            const cumpleFiltroNombreProfesor = nombreProfesor.includes(textoNombreProfesor) || textoNombreProfesor === "";
-            const cumpleFiltroNombreAlumno = nombreAlumno.includes(textoNombreAlumno) || textoNombreAlumno === "";
-            const cumpleFiltroGrupo = valorGrupo === "" || grupo === valorGrupo;
-            const cumpleFiltroPuntos = valorPuntos === "" || puntos === valorPuntos;
-            const cumpleFiltroCaducado = valorCaducado === "" || caducado === valorCaducado; // Comparar con el valor seleccionado del select
+            const cumpleFiltroFechaInicio = !fechaInicio || fecha >= fechaInicio; // Verificar si la fecha está después de la fecha de inicio
+            const cumpleFiltroFechaFin = !fechaFin || fecha <= fechaFin; // Verificar si la fecha está antes de la fecha de fin
+            const cumpleFiltroNombreProfesor = fila.cells[1].textContent.toLowerCase().includes(textoNombreProfesor) || textoNombreProfesor === "";
+            const cumpleFiltroNombreAlumno = fila.cells[2].textContent.toLowerCase().includes(textoNombreAlumno) || textoNombreAlumno === "";
+            const cumpleFiltroGrupo = valorGrupo === "" || fila.cells[3].textContent === valorGrupo;
+            const cumpleFiltroPuntos = valorPuntos === "" || fila.cells[4].textContent === valorPuntos;
+            const cumpleFiltroCaducado = valorCaducado === "" || fila.cells[5].textContent === valorCaducado;
 
-            // Mostrar u ocultar la fila según los filtros
-            fila.style.display = cumpleFiltroFecha && cumpleFiltroNombreProfesor && cumpleFiltroNombreAlumno && cumpleFiltroGrupo && cumpleFiltroPuntos && cumpleFiltroCaducado ? "" : "none";
+            fila.style.display = cumpleFiltroFechaInicio && cumpleFiltroFechaFin && cumpleFiltroNombreProfesor && cumpleFiltroNombreAlumno && cumpleFiltroGrupo && cumpleFiltroPuntos && cumpleFiltroCaducado ? "" : "none";
         }
     }
 });

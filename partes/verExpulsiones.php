@@ -2,19 +2,25 @@
 <html lang="en">
 
 <head>
-    <title>Expulsiones Pendientes</title>
+    <title>Expulsiones</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="stylesheet" href="../css/principal.css">
     <!-- Bootstrap CSS v5.2.1 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
-    <script src="js/paginacionFiltroPartes.js"></script>
-
     <style>
         .table-rounded {
             border-radius: 10px;
             overflow: hidden;
+        }
+
+        .estado-confirmado {
+            color: green;
+        }
+
+        .estado-pendiente {
+            color: yellow;
         }
     </style>
 </head>
@@ -27,7 +33,7 @@
     </header>
     <main class="p-4">
         <div class=" m-2">
-            <h2 class="text-light rounded bg-dark p-2 px-3">Expulsiones Pendientes</h2>
+            <h2 class="text-light rounded bg-dark p-2 px-3">Expulsiones</h2>
             <div class="row">
                 <div class="col-lg-3 col-md-6 my-2">
                     <input type="text" id="filtroNombreAlumno" class="form-control" placeholder="Filtrar por nombre del alumno">
@@ -48,14 +54,21 @@
                         ?>
                     </select>
                 </div>
+                <div class="col-lg-2 col-md-6 my-2">
+                    <select id="filtroEstado" class="form-select">
+                        <option value="">Filtrar por estado</option>
+                        <option value="Confirmada">Confirmada</option>
+                        <option value="Pendiente">Pendiente</option>
+                    </select>
+                </div>
             </div>
             <table id="tablaPartes" class="table table-striped table-rounded">
                 <thead>
                     <tr>
                         <th>Nombre Alumno</th>
                         <th>Grupo</th>
+                        <th>Estado</th>
                         <th>Administrar</th>
-                        <!-- Agrega más encabezados según las columnas de tu tabla -->
                     </tr>
                 </thead>
                 <tbody>
@@ -74,8 +87,16 @@
                             $query = "WHERE u.cod_usuario = $id_usuario";
                         }
 
-                        $consulta = $db->prepare("SELECT a.matricula, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo, 
-                            SUM(i.puntos) AS totalPuntos
+                        $consulta = $db->prepare(    
+                            "SELECT a.matricula, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo,
+                            1 AS totalPuntos, 'Confirmada' as estado
+                            FROM Expulsiones e
+                            JOIN Alumnos a ON e.matricula_del_Alumno = a.matricula
+
+                            UNION 
+
+                            SELECT a.matricula, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo, 
+                            SUM(i.puntos) AS totalPuntos, 'Pendiente' as estado
                             FROM Incidencias i
                             JOIN Partes p ON i.cod_incidencia = p.incidencia
                             JOIN Alumnos a ON p.matricula_Alumno = a.matricula
@@ -89,12 +110,18 @@
 
                         // Iterar sobre los resultados y mostrar cada parte en una fila de la tabla
                         while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
+                            // Determinar la clase CSS según el estado
                             echo "<tr>";
                             echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
                             echo "<td>" . $row['grupo'] . "</td>";
-                            echo "<td><p><a class='text-decoration-none  text-black' href='Confirmar_Expulsion.php?matricula=" . $row['matricula'] . "'>Confirmar expulsión -></a></p></td>";
-
-                            // Agrega más columnas según las columnas de tu base de datos
+                            
+                            if ($row['estado'] == 'Confirmada') {
+                                echo "<td class='text-success'>" . $row['estado'] . "</td>";
+                                echo "<td><p><a class='text-decoration-none  text-black' href='detalleExpulsion.php?cod_expulsion=" . $row['matricula'] . "'>Ver detalle -></a></p></td>";
+                            } else {
+                                echo "<td class='text-warning'>" . $row['estado'] . "</td>";
+                                echo "<td><p><a class='text-decoration-none  text-black' href='Confirmar_Expulsion.php?matricula=" . $row['matricula'] . "'>Confirmar expulsión -></a></p></td>";
+                            }
                             echo "</tr>";
                         }
                     } catch (PDOException $e) {
@@ -104,19 +131,14 @@
                     // Cerrar la conexión a la base de datos
                     $db = null;
                     ?>
-
                 </tbody>
             </table>
             <div class="d-flex justify-content-center mt-5" id="tablaPaginacion">
-
                 <nav aria-label="Page navigation example">
                     <ul class="pagination" id="paginacion">
-
                     </ul>
                 </nav>
-
             </div>
-
         </div>
     </main>
     <footer>
@@ -129,30 +151,33 @@
         document.addEventListener("DOMContentLoaded", function() {
             const filtroNombreAlumno = document.getElementById("filtroNombreAlumno");
             const filtroGrupo = document.getElementById("filtroGrupo");
+            const filtroEstado = document.getElementById("filtroEstado");
             const tablaPartes = document.getElementById("tablaPartes").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 
             // Agregar event listeners para los campos de filtro
             filtroNombreAlumno.addEventListener("input", filtrarTabla);
             filtroGrupo.addEventListener("change", filtrarTabla);
+            filtroEstado.addEventListener("change", filtrarTabla);
 
             function filtrarTabla() {
                 const textoNombreAlumno = filtroNombreAlumno.value.toLowerCase();
                 const valorGrupo = filtroGrupo.value;
+                const valorEstado = filtroEstado.value;
                 // Iterar sobre las filas de la tabla
                 for (let fila of tablaPartes) {
                     const nombreAlumno = fila.cells[0].textContent.toLowerCase(); // Cambiado a 0, primera celda de la fila
                     const grupo = fila.cells[1].textContent; // Cambiado a 1, segunda celda de la fila
+                    const estado = fila.cells[2].textContent; // Cambiado a 2, tercera celda de la fila
                     // Verificar si la fila coincide con los filtros
                     const cumpleFiltroNombreAlumno = nombreAlumno.includes(textoNombreAlumno) || textoNombreAlumno === "";
                     const cumpleFiltroGrupo = valorGrupo === "" || grupo === valorGrupo;
+                    const cumpleFiltroEstado = valorEstado === "" || estado === valorEstado;
                     // Mostrar u ocultar la fila según los filtros
-                    fila.style.display = cumpleFiltroNombreAlumno && cumpleFiltroGrupo ? "" : "none";
+                    fila.style.display = cumpleFiltroNombreAlumno && cumpleFiltroGrupo && cumpleFiltroEstado ? "" : "none";
                 }
             }
         });
     </script>
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 

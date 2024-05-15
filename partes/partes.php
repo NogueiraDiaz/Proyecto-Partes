@@ -78,6 +78,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class='card col-7 g-3 m-auto my-3 bg-dark text-light'>
+                        <div class='row'>
+                            <div class='col-2 d-lg-block d-none'>
+                                <img src='./img/exportar.jpg' class=' rounded-start' alt='foto' style='height: 150px; margin-left: -8px;'>
+                            </div>
+                            <div class='col-10'>
+                                <div class='card-body'>
+                                    <h4 class='card-title text-decoration-underline'>Exportar Alumnos</h4>
+                                    <p class='card-text'>Apartado para exportar los alumnos matriculados a un archivo externo</p>
+                                    <a href='exportarAlumnos.php'><button type='button' class='btn btn-light'>Exportar Alumnos</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
             ";} ?>
 
