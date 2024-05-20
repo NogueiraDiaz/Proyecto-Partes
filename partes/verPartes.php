@@ -91,6 +91,7 @@
                     <select id="filtroCaducado" class="form-select">
                         <option value="">Filtrar por estado</option>
                         <option value="Caducado">Caducado</option>
+                        <option value="Usado">Usado</option>
                         <option value="Vigente">Vigente</option>
                     </select>
                 </div>
@@ -140,18 +141,38 @@
 
 while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
     echo "<tr class='fila-tabla'>";
-    echo "<td class='text-center'>" . $row['fecha'] . "</td>";
-    echo "<td>" . $row['nombreProfesorCompleto'] . "</td>";
-    echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
-    echo "<td class='text-center'>" . $row['grupo'] . "</td>";
-    echo "<td class='text-center'>" . $row['puntos'] . "</td>";
+echo "<td class='text-center'>" . $row['fecha'] . "</td>";
+echo "<td>" . $row['nombreProfesorCompleto'] . "</td>";
+echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
+echo "<td class='text-center'>" . $row['grupo'] . "</td>";
+echo "<td class='text-center'>" . $row['puntos'] . "</td>";
 
-    $estado = $row['caducado'] == 1 ? "Caducado" : "Vigente";
-    echo "<td class='text-center'>" . $estado . "</td>";
+// Aplicar clases de estilo según el estado
+$estado = '';
+switch ($row['caducado']) {
+    case 0:
+        $estado = 'Vigente';
+        $color = 'text-success';
+        break;
+    case 1:
+        $estado = 'Caducado';
+        $color = 'text-danger'; 
+        break;
+    case 2:
+        $estado = 'Usado';
+        $color = 'text-warning'; 
+        break;
+    default:
+        $estado = 'Desconocido';
+        $color = '';
+        break;
+}
 
-    echo "<td><p><a class='text-decoration-none  text-black' href='detalleParte.php?cod_parte=" . $row['cod_parte'] . "'>Ver Parte -></a></p></td>";
-    
-    echo "</tr>";
+echo "<td class='text-center $color'>$estado</td>";
+
+echo "<td><p><a class='text-decoration-none  text-black' href='detalleParte.php?cod_parte=" . $row['cod_parte'] . "'>Ver Parte -></a></p></td>";
+echo "</tr>";
+
 }
 
 

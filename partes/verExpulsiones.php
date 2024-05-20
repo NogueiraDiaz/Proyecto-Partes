@@ -14,14 +14,6 @@
             border-radius: 10px;
             overflow: hidden;
         }
-
-        .estado-confirmado {
-            color: green;
-        }
-
-        .estado-pendiente {
-            color: yellow;
-        }
     </style>
 </head>
 
@@ -34,7 +26,7 @@
     <main class="p-4">
         <div class=" m-2">
             <h2 class="text-light rounded bg-dark p-2 px-3">Expulsiones</h2>
-            <div class="row">
+            <div class="row my-2">
                 <div class="col-lg-3 col-md-6 my-2">
                     <input type="text" id="filtroNombreAlumno" class="form-control" placeholder="Filtrar por nombre del alumno">
                 </div>
@@ -65,6 +57,7 @@
             <table id="tablaPartes" class="table table-striped table-rounded">
                 <thead>
                     <tr>
+                        <th>Fecha Expulsion</th>
                         <th>Nombre Alumno</th>
                         <th>Grupo</th>
                         <th>Estado</th>
@@ -88,14 +81,15 @@
                         }
 
                         $consulta = $db->prepare(    
-                            "SELECT a.matricula, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo,
+                            "SELECT e.cod_expulsion, a.matricula, e.fecha_Insercion, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo,
                             1 AS totalPuntos, 'Confirmada' as estado
                             FROM Expulsiones e
                             JOIN Alumnos a ON e.matricula_del_Alumno = a.matricula
+                            $query
 
                             UNION 
 
-                            SELECT a.matricula, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo, 
+                            SELECT 1 cod_expulsion, a.matricula, 'Por Confirmar' fecha_Insercion, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo, 
                             SUM(i.puntos) AS totalPuntos, 'Pendiente' as estado
                             FROM Incidencias i
                             JOIN Partes p ON i.cod_incidencia = p.incidencia
@@ -104,6 +98,8 @@
                             WHERE p.caducado = 0
                             GROUP BY a.matricula
                             HAVING totalPuntos >= 10
+
+                            ORDER BY fecha_Insercion DESC
                         ");
 
                         $consulta->execute();
@@ -112,15 +108,17 @@
                         while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
                             // Determinar la clase CSS según el estado
                             echo "<tr>";
+                            echo "<td>" . $row['fecha_Insercion'] . "</td>";
                             echo "<td>" . $row['nombreAlumnoCompleto'] . "</td>";
                             echo "<td>" . $row['grupo'] . "</td>";
                             
+                            
                             if ($row['estado'] == 'Confirmada') {
                                 echo "<td class='text-success'>" . $row['estado'] . "</td>";
-                                echo "<td><p><a class='text-decoration-none  text-black' href='detalleExpulsion.php?cod_expulsion=" . $row['matricula'] . "'>Ver detalle -></a></p></td>";
+                                echo "<td><p><a class='text-decoration-none  text-black' href='detalleExpulsion.php?cod_expulsion=" . $row['cod_expulsion'] . "'>Ver detalle -></a></p></td>";
                             } else {
                                 echo "<td class='text-warning'>" . $row['estado'] . "</td>";
-                                echo "<td><p><a class='text-decoration-none  text-black' href='Confirmar_Expulsion.php?matricula=" . $row['matricula'] . "'>Confirmar expulsión -></a></p></td>";
+                                echo "<td><p><a class='text-decoration-none  text-black' href='confirmarExpulsion.php?matricula=" . $row['matricula'] . "'>Confirmar expulsión -></a></p></td>";
                             }
                             echo "</tr>";
                         }
