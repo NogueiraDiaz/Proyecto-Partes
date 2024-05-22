@@ -25,8 +25,31 @@
     </header>
     <main class="p-4">
         <div class=" m-2">
+        <?php
+            // Verificar si se ha recibido el parámetro 'eliminado' en la URL
+            if (isset($_GET['eliminado'])) {
+                // Mostrar el mensaje según el valor del parámetro
+                if ($_GET['eliminado'] == 1) {
+                    echo '<h3 class="text-light rounded bg-success p-2 px-3">Parte eliminado exitosamente</h3>';
+                } elseif ($_GET['eliminado'] == 0) {
+                    echo '<h3 class="text-light rounded bg-danger p-2 px-3">No se ha podido eliminar el parte. Intentelo más tarde</h3>';
+                }
+            }
+            ?>
             <h2 class="text-light rounded bg-dark p-2 px-3">Expulsiones</h2>
             <div class="row my-2">
+            <div class="col-lg-3 col-md-6 my-2">
+                    <div class="input-group">
+                        <span class="input-group-text">Desde</span>
+                        <input type="date" id="filtroFechaInicio" class="form-control" placeholder="Fecha de inicio">
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 my-2">
+                    <div class="input-group">
+                        <span class="input-group-text">Hasta</span>
+                        <input type="date" id="filtroFechaFin" class="form-control" placeholder="Fecha de fin">
+                    </div>
+                </div>
                 <div class="col-lg-3 col-md-6 my-2">
                     <input type="text" id="filtroNombreAlumno" class="form-control" placeholder="Filtrar por nombre del alumno">
                 </div>
@@ -54,7 +77,7 @@
                     </select>
                 </div>
             </div>
-            <table id="tablaPartes" class="table table-striped table-rounded">
+            <table id="tablaExpulsiones" class="table table-striped table-rounded">
                 <thead>
                     <tr>
                         <th>Fecha Expulsion</th>
@@ -81,7 +104,7 @@
                         }
 
                         $consulta = $db->prepare(    
-                            "SELECT e.cod_expulsion, a.matricula, e.fecha_Insercion, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo,
+                            "SELECT e.fecha_Insercion, e.cod_expulsion, a.matricula,  CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo,
                             1 AS totalPuntos, 'Confirmada' as estado
                             FROM Expulsiones e
                             JOIN Alumnos a ON e.matricula_del_Alumno = a.matricula
@@ -89,7 +112,7 @@
 
                             UNION 
 
-                            SELECT 1 cod_expulsion, a.matricula, 'Por Confirmar' fecha_Insercion, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo, 
+                            SELECT 'Por Confirmar' fecha_Insercion, 1 cod_expulsion, a.matricula, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo, 
                             SUM(i.puntos) AS totalPuntos, 'Pendiente' as estado
                             FROM Incidencias i
                             JOIN Partes p ON i.cod_incidencia = p.incidencia
@@ -147,31 +170,41 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            const filtroFechaInicio = document.getElementById("filtroFechaInicio");
+    const filtroFechaFin = document.getElementById("filtroFechaFin");
             const filtroNombreAlumno = document.getElementById("filtroNombreAlumno");
             const filtroGrupo = document.getElementById("filtroGrupo");
             const filtroEstado = document.getElementById("filtroEstado");
-            const tablaPartes = document.getElementById("tablaPartes").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+            const tablaExpulsiones = document.getElementById("tablaExpulsiones").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 
             // Agregar event listeners para los campos de filtro
+            filtroFechaInicio.addEventListener("input", filtrarTabla);
+            filtroFechaFin.addEventListener("input", filtrarTabla);
             filtroNombreAlumno.addEventListener("input", filtrarTabla);
             filtroGrupo.addEventListener("change", filtrarTabla);
             filtroEstado.addEventListener("change", filtrarTabla);
 
             function filtrarTabla() {
+                const fechaInicio = filtroFechaInicio.valueAsDate;
+                const fechaFin = filtroFechaFin.valueAsDate;
                 const textoNombreAlumno = filtroNombreAlumno.value.toLowerCase();
                 const valorGrupo = filtroGrupo.value;
                 const valorEstado = filtroEstado.value;
                 // Iterar sobre las filas de la tabla
-                for (let fila of tablaPartes) {
-                    const nombreAlumno = fila.cells[0].textContent.toLowerCase(); // Cambiado a 0, primera celda de la fila
-                    const grupo = fila.cells[1].textContent; // Cambiado a 1, segunda celda de la fila
-                    const estado = fila.cells[2].textContent; // Cambiado a 2, tercera celda de la fila
+                for (let fila of tablaExpulsiones) {
+                    const fecha = new Date(fila.cells[0].textContent);
+
+                    const cumpleFiltroFechaInicio = !fechaInicio || fecha >= fechaInicio; // Verificar si la fecha está después de la fecha de inicio
+                    const cumpleFiltroFechaFin = !fechaFin || fecha <= fechaFin; // Verificar si la fecha está antes de la fecha de fin
+                    const nombreAlumno = fila.cells[1].textContent.toLowerCase(); // Cambiado a 0, primera celda de la fila
+                    const grupo = fila.cells[2].textContent; // Cambiado a 1, segunda celda de la fila
+                    const estado = fila.cells[3].textContent; // Cambiado a 2, tercera celda de la fila
                     // Verificar si la fila coincide con los filtros
                     const cumpleFiltroNombreAlumno = nombreAlumno.includes(textoNombreAlumno) || textoNombreAlumno === "";
                     const cumpleFiltroGrupo = valorGrupo === "" || grupo === valorGrupo;
                     const cumpleFiltroEstado = valorEstado === "" || estado === valorEstado;
                     // Mostrar u ocultar la fila según los filtros
-                    fila.style.display = cumpleFiltroNombreAlumno && cumpleFiltroGrupo && cumpleFiltroEstado ? "" : "none";
+                    fila.style.display = cumpleFiltroFechaInicio && cumpleFiltroFechaFin && cumpleFiltroNombreAlumno && cumpleFiltroGrupo && cumpleFiltroEstado ? "" : "none";
                 }
             }
         });

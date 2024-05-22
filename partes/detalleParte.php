@@ -61,7 +61,7 @@
             echo "<p class='card-text'>Materia: " . $parte['materia'] . "</p>";
             echo "<p class='card-text'>Detalle: " . $parte['descripcion'] . "</p>";
             echo "<p class='card-text ".($parte['caducado'] == 1 ? 'text-danger' : '')."'>".($parte['caducado'] == 1 ? 'Caducado' : '')."</p>";
-            echo "<button class='btn btn-danger mt-4' onclick='eliminarParte(" . $parte['cod_parte'] . ")'>Eliminar Parte</button>";
+            echo "<button class='btn btn-danger mt-4' onclick='eliminarParte(" . $parte['cod_parte'] . ")' " . ($parte['caducado'] == 2 ? "disabled" : "") . ">Eliminar Parte</button>";
             echo '<button class="btn ' . ($parte['caducado'] == 0 ? 'btn-warning' : 'btn-danger') . ' mt-4 ms-4" onclick="caducarParte(' . $parte['cod_parte'] . ')" ' . ($parte['caducado'] == 0 ? '' : 'disabled') . '>Caducar Parte</button>';
             echo "</div>";
             echo "</div>";
@@ -71,7 +71,8 @@
         }
     } else {
         // Mostrar un mensaje si no se proporcionó el parámetro cod_parte
-        echo "<p>No se proporcionó el parámetro cod_parte en la URL.</p>";
+        echo "<h2 class='text-dark rounded bg-light p-2 px-3 my-4'>Algo ha salidomal, intentelo mas tarde.</h2>";
+
     }
 
     // Cerrar la conexión a la base de datos
