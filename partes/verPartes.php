@@ -13,7 +13,7 @@
     <script src="./js/paginacionFiltroPartes.js"></script>
 
     <style>
-        .table-rounded {
+        .rounded {
             border-radius: 10px;
             overflow: hidden;
         }
@@ -36,6 +36,16 @@
                     echo '<h3 class="text-light rounded bg-success p-2 px-3">Parte eliminado exitosamente</h3>';
                 } elseif ($_GET['eliminado'] == 0) {
                     echo '<h3 class="text-light rounded bg-danger p-2 px-3">No se ha podido eliminar el parte. Intentelo más tarde</h3>';
+                }
+            }
+
+            // Verificar si se ha recibido el parámetro 'eliminado' en la URL
+            if (isset($_GET['insertado'])) {
+                // Mostrar el mensaje según el valor del parámetro
+                if ($_GET['insertado'] == 1) {
+                    echo '<h3 class="text-light rounded bg-success p-2 px-3">Parte insertado exitosamente</h3>';
+                } elseif ($_GET['insertado'] == 0) {
+                    echo '<h3 class="text-light rounded bg-danger p-2 px-3">No se ha podido insertar el parte. Intentelo más tarde</h3>';
                 }
             }
             ?>
@@ -97,7 +107,7 @@
                 </div>
 
             </div>
-            <table id="tablaPartes" class="table table-striped table-rounded">
+            <table id="tablaPartes" class="table table-striped rounded">
                 <thead>
                     <tr>
                         <th style="width: 125px" class="text-center">Fecha</th>
