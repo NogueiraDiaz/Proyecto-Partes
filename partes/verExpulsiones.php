@@ -114,23 +114,14 @@
                         }
 
                         $consulta = $db->prepare(    
-                            "SELECT e.fecha_Insercion, e.cod_expulsion, a.matricula,  CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo,
-                            1 AS totalPuntos, 'Confirmada' as estado
+                            "SELECT  e.cod_expulsion, DATE(e.fecha_Insercion) fecha_Insercion, a.matricula,  CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo,
+                            CASE 
+                            WHEN fecha_Inicio IS NOT NULL THEN 'Confirmada'
+                            ELSE 'Pendiente'
+                            END estado
                             FROM Expulsiones e
                             JOIN Alumnos a ON e.matricula_del_Alumno = a.matricula
                             $query
-
-                            UNION 
-
-                            SELECT 'Por Confirmar' fecha_Insercion, 1 cod_expulsion, a.matricula, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo, 
-                            SUM(i.puntos) AS totalPuntos, 'Pendiente' as estado
-                            FROM Incidencias i
-                            JOIN Partes p ON i.cod_incidencia = p.incidencia
-                            JOIN Alumnos a ON p.matricula_Alumno = a.matricula
-                            $query
-                            WHERE p.caducado = 0
-                            GROUP BY a.matricula
-                            HAVING totalPuntos >= 10
 
                             ORDER BY fecha_Insercion DESC
                         ");
@@ -151,7 +142,7 @@
                                 echo "<td><p><a class='text-decoration-none  text-black' href='detalleExpulsion.php?cod_expulsion=" . $row['cod_expulsion'] . "'>Ver detalle -></a></p></td>";
                             } else {
                                 echo "<td class='text-warning'>" . $row['estado'] . "</td>";
-                                echo "<td><p><a class='text-decoration-none  text-black' href='confirmarExpulsion.php?matricula=" . $row['matricula'] . "'>Confirmar expulsión -></a></p></td>";
+                                echo "<td><p><a class='text-decoration-none  text-black' href='confirmarExpulsion.php?cod_expulsion=" . $row['cod_expulsion'] . "'>Confirmar expulsión -></a></p></td>";
                             }
                             echo "</tr>";
                         }
