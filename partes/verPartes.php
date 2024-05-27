@@ -46,7 +46,12 @@
                     echo '<h3 class="text-light rounded bg-success p-2 px-3">Parte insertado exitosamente</h3>';
                 } elseif ($_GET['insertado'] == 0) {
                     echo '<h3 class="text-light rounded bg-danger p-2 px-3">No se ha podido insertar el parte. Intentelo más tarde</h3>';
+                } elseif ($_GET['insertado'] == 2) {
+                    echo '<h3 class="text-light rounded bg-success p-2 px-3">Parte y expulsion insertadas correctamente</h3>';
+                } elseif ($_GET['insertado'] == 3) {
+                    echo '<h3 class="text-light rounded bg-danger p-2 px-3">Parte insertado, error en la expulsion</h3>';
                 }
+                
             }
             ?>
             <h2 class="text-light rounded bg-dark p-2 px-3">Tabla de Partes</h2>
