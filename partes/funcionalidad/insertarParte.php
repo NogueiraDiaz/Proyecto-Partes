@@ -96,8 +96,8 @@ try {
                         <form action='insertarExpulsion.php' method='post'>
                             <input type='hidden' name='matricula_Alumno' value='$matricula_Alumno'>
                             <p>Con este último parte el alumno ha acumulado 10 o más puntos, ¿Qué tipo de expulsión desea llevar a cabo?</p>
-                            <button type='submit' name='tipo_expulsion' value='trabajo' class='btn btn-primary'>Trabajos SocioEducativos</button>
-                            <button type='submit' name='tipo_expulsion' value='casa' class='btn btn-primary'>Expulsión a casa</button>
+                            <button type='submit' name='tipo_expulsion' value='Trabajo Social Educativo' class='btn btn-primary'>Trabajos SocioEducativos</button>
+                            <button type='submit' name='tipo_expulsion' value='Expulsion a Casa' class='btn btn-primary'>Expulsión a casa</button>
                         </form> 
                     </div>
                 </div>

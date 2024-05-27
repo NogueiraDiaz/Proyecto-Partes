@@ -76,8 +76,8 @@
                         <select name="via_Comunicacion" id="viaComunicacion" class="form-select" required>
                             <option value="">Seleccione una vía de comunicación</option>
                             <option value="Mensaje">Mensaje</option>
-                            <option value="Notificacion Externa">Notificación Externa</option>
-                            <option value="LLamada Teléfonica">Llamada Telefónica</option>
+                            <option value="Notificacion Externa">Notificación Escrita</option>
+                            <option value="LLamada Telefónica">Llamada Telefónica</option>
                             <option value="Entrevista con los padres">Entrevista con los padres</option>
                         </select>
                     </div>
