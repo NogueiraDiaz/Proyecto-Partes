@@ -77,28 +77,28 @@ try {
                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
                 <title>Expulsión</title>
                 <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' rel='stylesheet'>
-                <style>
-                    .centered-box {
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        background-color: #343a40;
-                        padding: 20px;
-                        border-radius: 10px;
-                        color: white;
-                    }
-                </style>
             </head>
+            <style>
+                body {
+                    color: white;
+                    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+                }
+            </style>
             <body>
-                <div class='container'>
-                    <div class='centered-box'>
-                        <form action='insertarExpulsion.php' method='post'>
-                            <input type='hidden' name='matricula_Alumno' value='$matricula_Alumno'>
-                            <p>Con este último parte el alumno ha acumulado 10 o más puntos, ¿Qué tipo de expulsión desea llevar a cabo?</p>
-                            <button type='submit' name='tipo_expulsion' value='Trabajo Social Educativo' class='btn btn-primary'>Trabajos SocioEducativos</button>
-                            <button type='submit' name='tipo_expulsion' value='Expulsion a Casa' class='btn btn-primary'>Expulsión a casa</button>
-                        </form> 
+                <div class='container mt-5'>
+                    <div class='row justify-content-center'>
+                        <div class='col-md-6'>
+                            <div class='card'>
+                                <div class='card-body bg-dark rounded'>
+                                    <form action='insertarExpulsion.php' method='post'>
+                                        <input type='hidden' name='matricula_Alumno' value='$matricula_Alumno'>
+                                        <p class='mb-4 c-white'>Con este último parte el alumno ha acumulado 10 o más puntos, ¿Qué tipo de expulsión desea llevar a cabo?</p>
+                                        <button type='submit' name='tipo_expulsion' value='Trabajo Social Educativo' class='btn btn-primary btn-block mb-2'>Trabajos Social Educativos</button>
+                                        <button type='submit' name='tipo_expulsion' value='Expulsion a Casa' class='btn btn-primary btn-block'>Expulsión a casa</button>
+                                    </form> 
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <script src='https://code.jquery.com/jquery-3.5.1.slim.min.js'></script>
