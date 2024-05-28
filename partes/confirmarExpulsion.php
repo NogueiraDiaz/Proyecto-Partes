@@ -40,19 +40,21 @@
                     <?php
                         require_once "../archivosComunes/conexion.php";
                         if ($db) {
-                            if (isset($_GET['matricula'])) {
-                                $cod_matricula = $_GET['matricula'];
-                                $consulta = $db->prepare("SELECT p.cod_parte, CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, i.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.matricula, p.materia, p.fecha_Comunicacion, p.descripcion, p.caducado, a.grupo
-                                                          FROM Incidencias i
-                                                          JOIN Partes p ON i.cod_incidencia = p.incidencia
+                            if (isset($_GET['cod_expulsion'])) {
+                                $cod_expulsion =  $_GET['cod_expulsion'] ;
+                                $consulta = $db->prepare("SELECT p.cod_parte, CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, i.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.matricula, p.materia, p.fecha_Comunicacion, p.descripcion, p.caducado, a.grupo , e.cod_expulsion
+                                                          FROM Partes p  
+                                                          JOIN Expulsiones e ON p.matricula_Alumno = e.matricula_del_alumno
+                                                          JOIN Incidencias i ON p.incidencia = i.cod_incidencia
                                                           JOIN Usuarios u ON p.cod_usuario = u.cod_usuario
                                                           JOIN alumnos a ON p.matricula_Alumno = a.matricula
-                                                          WHERE a.matricula = :cod_matricula and p.caducado = 0
+                                                          WHERE  e.cod_expulsion = ?
                                                           ORDER BY p.fecha DESC");
-                                $consulta->bindParam(":cod_matricula", $cod_matricula);
-                                $consulta->execute();
+                                $consulta->execute(array($cod_expulsion));
                                 $alumno = $consulta->fetch();
                                 $partes = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+                                
                             } else {
                                 echo "<p>No se proporcionó el parámetro cod_parte en la URL.</p>";
                             }
@@ -65,16 +67,19 @@
                         <div class="m-3 border border-dark p-2" style="max-height: 150px; overflow-y: auto;">
                             <?php
                                 if (isset($partes)) {
+                                    $puntos_totales = 0;
                                     foreach ($partes as $parte) {
                                         echo '<input type="checkbox" name="partes[]" value="' . $parte['cod_parte'] . '">';
-                                        echo '<label>' . $parte['nombreProfesorCompleto'] . ' - ' . $parte['fecha_Comunicacion'] . '</label><br>';
+                                        echo '<label>' . $parte['nombreProfesorCompleto'] . ' - ' . $parte['fecha_Comunicacion'] .' / '. $parte['puntos'] .'</label><br>';
+                                        $puntos_totales = $puntos_totales + $parte["puntos"];
                                     }
+
                                 }
                             ?>
                         </div>
                     </div>
-                    <input type="hidden" name="matricula" value="<?php echo isset($alumno['matricula']) ? $alumno['matricula'] : ''; ?>">
-                    <button type="submit" name="Expulsar" class="btn btn-danger m-1 boton">Expulsar</button>
+                    <input type="hidden" name="puntos" value="<?php echo $puntos_totales ?>">
+                    <button type="submit" name="Expulsar"  value="<?php echo isset($alumno['cod_expulsion']) ? $alumno['cod_expulsion'] : ''; ?>" class="btn btn-danger m-1 boton">Expulsar</button>
                 </form>  
             </div>
         </div>  
@@ -115,47 +120,51 @@
     <?php 
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["Expulsar"])) {
             require_once "../archivosComunes/conexion.php";
-            if ($db) {
+            if ($_POST["puntos"] >=10) {
                 try {
                     $db->beginTransaction();
-                    $Añadir_Expulsion = $db->prepare("INSERT INTO expulsiones(cod_usuario, matricula_del_Alumno, fecha_Inicio, Fecha_Fin) VALUES (:cod_usuario, :matricula, :fecha_Inicio, :Fecha_Fin)");
-                    $result = $Añadir_Expulsion->execute(array(":cod_usuario" => $_SESSION['usuario_login']['cod_usuario'], ":matricula" => $_POST["matricula"], ":fecha_Inicio" => $_POST["fecha_inicio"], ":Fecha_Fin" => $_POST["fecha_final"]));
-                    
-                    if(!$result){
-                        throw new Exception("Error al insertar la expulsión.");
+                    $cod_expulsion = $_POST["Expulsar"];
+                    $fecha_inicio = $_POST["fecha_inicio"];
+                    $fecha_fin = $_POST["fecha_final"];
+                    $actualizar_Expulsion = $db->prepare("UPDATE Expulsiones SET fecha_Inicio = ?, Fecha_Fin = ?  WHERE cod_expulsion = ?");
+                    $result = $actualizar_Expulsion->execute(array($fecha_inicio, $fecha_fin, $cod_expulsion));
+                
+                    if (!$result) {
+                        throw new Exception("Error al actualizar la expulsión.");
                     }
-
-                    $cod_expulsion = $db->lastInsertId();
+                
                     $partes = $_POST["partes"];
-
+                
                     foreach ($partes as $parte) {
-                        $Añadir_Parte_Expulsion = $db->prepare("INSERT INTO partesexpulsiones(cod_parte, cod_expulsion) VALUES (:cod_parte, :cod_expulsion)");
-                        $result = $Añadir_Parte_Expulsion->execute(array(":cod_parte" => $parte, ":cod_expulsion" => $cod_expulsion));
-
-                        if(!$result){
-                            throw new Exception("Error al insertar datos .");
+                        $Añadir_Parte_Expulsion = $db->prepare("INSERT INTO partesexpulsiones(cod_parte, cod_expulsion) VALUES (?, ?)");
+                        $result = $Añadir_Parte_Expulsion->execute(array($parte, $cod_expulsion));
+                
+                        if (!$result) {
+                            throw new Exception("Error al insertar datos.");
                         } else {
                             $actualizacion = $db->prepare("UPDATE partes SET caducado = 2 WHERE cod_parte = ?");
                             $actualizacion->execute(array($parte));
                         }
                     }
-
+                
                     $db->commit();
                     print "
-                            <script>
-                            window.location = 'verExpulsiones.php?insertado=1';
-                            </script>";
+                    <script>
+                    window.location = 'verExpulsiones.php?insertado=1';
+                    </script>"; 
                     exit();
                 } catch (Exception $e) {
                     $db->rollBack();
+                    echo "Error: " . $e->getMessage();
                     print "
                     <script>
                     window.location = 'verExpulsiones.php?insertado=0';
-                    </script>";
+                    </script>"; 
                     exit();
                 }
+                
             } else {
-                echo "<p>Error en la conexión a la base de datos.</p>";
+                echo "<p>Error no son puntos suficientes.</p>";
             }
         }
     ?>
