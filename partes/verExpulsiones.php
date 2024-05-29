@@ -15,6 +15,7 @@
             overflow: hidden;
         }
     </style>
+    <script src="./js/paginacionFiltroExpulsiones.js"></script>
 </head>
 
 <body>

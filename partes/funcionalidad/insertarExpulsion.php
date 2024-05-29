@@ -1,14 +1,17 @@
 <?php
-// Incluir el archivo de conexión a la base de datos
 require_once "../../archivosComunes/conexion.php";
 session_start();
 
 try {
+    // Establecer el modo de error de PDO a excepción
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    print_r($_POST['matriculas_Alumnos']);
+
     // Obtener los datos del formulario
+    $matriculas_Alumnos = $_POST['matriculas_Alumnos'];
+    $tiposExpulsion = $_POST['tipo_expulsion'];
     $cod_Usuario = $_SESSION['usuario_login']['cod_usuario'];
-    $matricula_Alumno = $_POST['matricula_Alumno'];
-    $tipo_expulsion = $_POST['tipo_expulsion'];
-    $fecha_Insercion = date('Y-m-d'); // Fecha actual
 
     // Iniciar una transacción
     $db->beginTransaction();
@@ -16,23 +19,23 @@ try {
     // Preparar la consulta SQL para insertar la expulsión
     $consulta = $db->prepare(
         "INSERT INTO expulsiones (cod_Usuario, matricula_del_Alumno, tipo_expulsion, fecha_Insercion) 
-        VALUES (:cod_Usuario, :matricula_Alumno, :tipo_expulsion, :fecha_Insercion)"
+        VALUES (:cod_Usuario, :matricula_Alumno, :tipo_expulsion, :fecha)"
     );
-    $consulta->bindParam(':cod_Usuario', $cod_Usuario);
-    $consulta->bindParam(':matricula_Alumno', $matricula_Alumno);
-    $consulta->bindParam(':tipo_expulsion', $tipo_expulsion);
-    $consulta->bindParam(':fecha_Insercion', $fecha_Insercion);
+
+    $fecha = date('Y-m-d'); // Fecha actual
 
 
+    foreach ($matriculas_Alumnos as $matricula_Alumno) {
+        $tipoExpulsion = $tiposExpulsion[$matricula_Alumno];
 
-    echo "Valores insertados:<br>";
-    echo "cod_Usuario: " . htmlspecialchars($cod_Usuario) . "<br>";
-    echo "matricula_Alumno: " . htmlspecialchars($matricula_Alumno) . "<br>";
-    echo "tipo_expulsion: " . htmlspecialchars($tipo_expulsion) . "<br>";
-    echo "fecha_Insercion: " . htmlspecialchars($fecha_Insercion) . "<br>";
+        $consulta->bindParam(':cod_Usuario', $cod_Usuario);
+        $consulta->bindParam(':matricula_Alumno', $matricula_Alumno);
+        $consulta->bindParam(':tipo_expulsion', $tipoExpulsion);
+        $consulta->bindParam(':fecha', $fecha);
 
-    // Ejecutar la consulta
-    $consulta->execute();
+        // Ejecutar la consulta
+        $consulta->execute();
+    }
 
     // Confirmar la transacción
     $db->commit();
@@ -43,6 +46,8 @@ try {
 } catch (PDOException $e) {
     // En caso de error, deshacer la transacción y redirigir al usuario con un mensaje de error
     $db->rollBack();
+    echo "Error: " . $e->getMessage();
     header("Location: ../verPartes.php?insertado=3");
     exit();
 }
+?>

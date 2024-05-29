@@ -38,8 +38,8 @@
                     </div>
                     <div class="col">
                         <label for="matriculaAlumno" class="form-label">Matrícula del Alumno</label>
-                        <select name="matricula_Alumno" id="matriculaAlumno" class="form-select" required>
-                            <option value="">Seleccione un Alumno</option>
+                        <select name="matricula_Alumno[]" id="matriculaAlumno" class="form-select" multiple required>
+                            <option value="">Seleccione uno o más Alumnos</option>
                         </select>
                     </div>
                 </div>
@@ -102,14 +102,12 @@
             grupoSelect.addEventListener("change", function() {
                 const grupo = this.value;
 
-                // Limpiar el select de alumnos
-                matriculaAlumnoSelect.innerHTML = '<option value="">Seleccione un Alumno</option>';
+                // Limpiar el select de alumnos y materias
+                matriculaAlumnoSelect.innerHTML = '<option value="">Seleccione uno o más Alumnos</option>';
                 materiaSelect.innerHTML = '<option value="">Seleccione una Materia</option>';
 
                 if (grupo) {
                     fetchAlumnos(grupo);
-
-
                     fetchMaterias(grupo);
                 }
             });
@@ -132,7 +130,6 @@
             }
 
             function fetchMaterias(grupo) {
-
                 const materias = <?php
                                     $consulta = $db->prepare("SELECT grupo, Cursos.curso, a.cod_asignatura , a.nombre FROM Cursos 
                                     JOIN Asignaturas a ON a.curso = Cursos.curso");
@@ -140,7 +137,6 @@
                                     $materias = $consulta->fetchAll(PDO::FETCH_ASSOC);
                                     echo json_encode($materias);
                                     ?>;
-
 
                 const filteredMaterias = materias.filter(materia => materia.grupo === grupo);
                 filteredMaterias.forEach(materia => {
@@ -150,7 +146,6 @@
                     materiaSelect.appendChild(option);
                 });
             }
-
         });
     </script>
 </body>

@@ -8,7 +8,7 @@ try {
 
     // Obtener los datos del formulario
     $cod_Usuario = $_SESSION['usuario_login']['cod_usuario'];
-    $matricula_Alumno = $_POST['matricula_Alumno'];
+    $matriculas_Alumnos = $_POST['matricula_Alumno']; // Esto es ahora un array
     $incidencia = $_POST['incidencia'];
     $materia = $_POST['materia'];
     $descripcion = $_POST['descripcion'];
@@ -26,49 +26,48 @@ try {
         "INSERT INTO partes (cod_Usuario, matricula_Alumno, incidencia, materia, fecha, hora, descripcion, fecha_Comunicacion, via_Comunicacion, caducado) 
         VALUES (:cod_Usuario, :matricula_Alumno, :incidencia, :materia, :fecha, :hora, :descripcion, :fecha_Comunicacion, :via_Comunicacion, :caducado)"
     );
-    $consulta->bindParam(':cod_Usuario', $cod_Usuario);
-    $consulta->bindParam(':matricula_Alumno', $matricula_Alumno);
-    $consulta->bindParam(':incidencia', $incidencia);
-    $consulta->bindParam(':materia', $materia);
-    $consulta->bindParam(':fecha', $fecha);
-    $consulta->bindParam(':hora', $hora);
-    $consulta->bindParam(':descripcion', $descripcion);
-    $consulta->bindParam(':fecha_Comunicacion', $fecha_Comunicacion);
-    $consulta->bindParam(':via_Comunicacion', $via_Comunicacion);
-    $consulta->bindParam(':caducado', $caducado);
 
-    // Ejecutar la consulta
-    $consulta->execute();
+    foreach ($matriculas_Alumnos as $matricula_Alumno) {
+        $consulta->bindParam(':cod_Usuario', $cod_Usuario);
+        $consulta->bindParam(':matricula_Alumno', $matricula_Alumno);
+        $consulta->bindParam(':incidencia', $incidencia);
+        $consulta->bindParam(':materia', $materia);
+        $consulta->bindParam(':fecha', $fecha);
+        $consulta->bindParam(':hora', $hora);
+        $consulta->bindParam(':descripcion', $descripcion);
+        $consulta->bindParam(':fecha_Comunicacion', $fecha_Comunicacion);
+        $consulta->bindParam(':via_Comunicacion', $via_Comunicacion);
+        $consulta->bindParam(':caducado', $caducado);
 
-    // Obtener los valores de puntos para depurar
-    $consultaValores = $db->prepare("
-        SELECT i.puntos 
-        FROM Incidencias i 
-        JOIN Partes p ON i.cod_incidencia = p.incidencia 
-        WHERE p.matricula_Alumno = :matricula_Alumno
-    ");
-    $consultaValores->bindParam(':matricula_Alumno', $matricula_Alumno);
-    $consultaValores->execute();
-    $valores = $consultaValores->fetchAll(PDO::FETCH_ASSOC);
+        // Ejecutar la consulta
+        $consulta->execute();
+    }
 
     // Obtener la suma de puntos de todos los partes del alumno
     $consultaPuntos = $db->prepare("
-        SELECT SUM(i.puntos) AS total_puntos 
+        SELECT matricula_Alumno, SUM(i.puntos) AS total_puntos 
         FROM Incidencias i 
         JOIN Partes p ON i.cod_incidencia = p.incidencia 
-        WHERE p.matricula_Alumno = :matricula_Alumno
+        WHERE p.matricula_Alumno IN (" . implode(',', array_fill(0, count($matriculas_Alumnos), '?')) . ")
+        GROUP BY matricula_Alumno
     ");
-    $consultaPuntos->bindParam(':matricula_Alumno', $matricula_Alumno);
-    $consultaPuntos->execute();
-    $resultadoPuntos = $consultaPuntos->fetch(PDO::FETCH_ASSOC);
-    $totalPuntos = $resultadoPuntos['total_puntos'];
+    $consultaPuntos->execute($matriculas_Alumnos);
+    $resultadoPuntos = $consultaPuntos->fetchAll(PDO::FETCH_ASSOC);
 
-    // Verificar si la suma de puntos es mayor a diez
-    if ($totalPuntos >= 10) {
+    // Array para guardar los alumnos que superan los 10 puntos
+    $alumnosExpulsion = [];
+
+    foreach ($resultadoPuntos as $puntosAlumno) {
+        if ($puntosAlumno['total_puntos'] >= 10) {
+            $alumnosExpulsion[] = $puntosAlumno['matricula_Alumno'];
+        }
+    }
+
+    if (!empty($alumnosExpulsion)) {
         // Confirmar la transacción
         $db->commit();
 
-        // Mostrar un formulario para preguntar si se desea insertar en la tabla expulsiones
+        // Mostrar un formulario para preguntar si se desea insertar en la tabla expulsiones para cada alumno
         echo "
             <!DOCTYPE html>
             <html lang='es'>
@@ -79,23 +78,37 @@ try {
                 <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' rel='stylesheet'>
             </head>
             <style>
-                body {
-                    color: white;
-                    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
-                }
+            body {
+                color: white;
+                background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+            }
             </style>
             <body>
                 <div class='container mt-5'>
                     <div class='row justify-content-center'>
                         <div class='col-md-6'>
                             <div class='card'>
-                                <div class='card-body bg-dark rounded'>
+                                <div class='card-body bg-dark rounded-lg'>
                                     <form action='insertarExpulsion.php' method='post'>
-                                        <input type='hidden' name='matricula_Alumno' value='$matricula_Alumno'>
-                                        <p class='mb-4 c-white'>Con este último parte el alumno ha acumulado 10 o más puntos, ¿Qué tipo de expulsión desea llevar a cabo?</p>
-                                        <button type='submit' name='tipo_expulsion' value='Trabajo Social Educativo' class='btn btn-primary btn-block mb-2'>Trabajos Social Educativos</button>
-                                        <button type='submit' name='tipo_expulsion' value='Expulsion a Casa' class='btn btn-primary btn-block'>Expulsión a casa</button>
-                                    </form> 
+        ";
+        
+        foreach ($alumnosExpulsion as $matricula_Alumno) {
+            echo "
+                <input type='hidden' name='matriculas_Alumnos[]' value='" . $matricula_Alumno . "'>
+                <p class='mb-4'>El alumno con matrícula " . $matricula_Alumno . " ha acumulado 10 o más puntos. ¿Qué tipo de expulsión desea llevar a cabo?</p>
+                <div class='form-group'>
+                    <label for='tipo_expulsion_" . $matricula_Alumno . "'>Tipo de expulsión</label>
+                    <select class='form-control' id='tipo_expulsion_" . $matricula_Alumno . "' name='tipo_expulsion[" . $matricula_Alumno . "]'>
+                        <option value='Trabajo Social Educativo'>Trabajo Social Educativo</option>
+                        <option value='Expulsion a Casa'>Expulsión a casa</option>
+                    </select>
+                </div>
+            ";
+        }
+        
+        echo "
+                                        <button type='submit' class='btn btn-primary btn-block'>Confirmar expulsión</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -118,8 +131,7 @@ try {
 } catch (PDOException $e) {
     // En caso de error, deshacer la transacción y redirigir al usuario con un mensaje de error
     $db->rollBack();
-    // Mostrar el error
-    echo "Error: " . $e->getMessage();
+    header("Location: ../verPartes.php?insertado=0");
     exit();
 }
 ?>
