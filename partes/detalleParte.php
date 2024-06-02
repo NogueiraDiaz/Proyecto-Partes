@@ -35,11 +35,12 @@
         $cod_parte = $_GET['cod_parte'];
         
         // Preparar la consulta para obtener los detalles de la parte
-        $consulta = $db->prepare("SELECT p.cod_parte, CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, i.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, p.materia, p.descripcion, p.caducado
+        $consulta = $db->prepare("SELECT p.cod_parte, CONCAT(u.nombre, ' ', u.apellidos) AS nombreProfesorCompleto, p.fecha, i.puntos, CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, asi.nombre Materia, p.descripcion, p.caducado
                                 FROM Incidencias i
                                 JOIN Partes p ON i.cod_incidencia = p.incidencia
                                 JOIN Usuarios u ON p.cod_usuario = u.cod_usuario
                                 JOIN alumnos a ON p.matricula_Alumno = a.matricula
+                                JOIN asignaturas asi ON p.materia = asi.cod_Asignatura
                                 WHERE p.cod_parte = :cod_parte
         ");
         $consulta->bindParam(":cod_parte", $cod_parte, PDO::PARAM_INT);
@@ -58,7 +59,7 @@
             echo "<p class='card-text'>Nombre del Profesor: " . $parte['nombreProfesorCompleto'] . "</p>";
             echo "<p class='card-text'>Nombre del Alumno: " . $parte['nombreAlumnoCompleto'] . "</p>";
             echo "<p class='card-text'>Puntos: " . $parte['puntos'] . "</p>";
-            echo "<p class='card-text'>Materia: " . $parte['materia'] . "</p>";
+            echo "<p class='card-text'>Materia: " . $parte['Materia'] . "</p>";
             echo "<p class='card-text'>Detalle: " . $parte['descripcion'] . "</p>";
             echo "<p class='card-text ".($parte['caducado'] == 1 ? 'text-danger' : '')."'>".($parte['caducado'] == 1 ? 'Caducado' : '')."</p>";
             echo "<button class='btn btn-danger mt-4' onclick='eliminarParte(" . $parte['cod_parte'] . ")' " . ($parte['caducado'] == 2 ? "disabled" : "") . ">Eliminar Parte</button>";

@@ -115,7 +115,8 @@
                         }
 
                         $consulta = $db->prepare(    
-                            "SELECT  e.cod_expulsion, DATE(e.fecha_Insercion) fecha_Insercion, a.matricula,  CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo,
+                            "SELECT  e.cod_expulsion, DATE(e.fecha_Insercion) fecha_Insercion, a.matricula, 
+                            CONCAT(a.nombre, ' ', a.apellidos) AS nombreAlumnoCompleto, a.grupo,
                             CASE 
                             WHEN fecha_Inicio IS NOT NULL THEN 'Confirmada'
                             ELSE 'Pendiente'
